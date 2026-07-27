@@ -1,15 +1,33 @@
-import { getWeatherCondition, MOCK_FAVORITES } from '../constants'
+import { getWeatherCondition } from '../constants'
+import { useFavoriteForecasts } from '../hooks'
+import type { Location } from '../types'
 import { formatTemperature } from '../utils'
 import { Icon } from '../components/Icon'
 import { WeatherIcon } from '../components/WeatherIcon'
 
-export function FavoritesPage() {
+interface FavoritesPageProps {
+  favorites: Location[]
+  onAddFavorite: () => void
+  onLocationSelect: (location: Location) => void
+  onRemoveFavorite: (locationId: number) => void
+}
+
+export function FavoritesPage({
+  favorites,
+  onAddFavorite,
+  onLocationSelect,
+  onRemoveFavorite,
+}: FavoritesPageProps) {
+  const { forecasts, isLoading } = useFavoriteForecasts(favorites)
+
   return (
     <main className="favorites-page">
       <header className="mobile-header">
         <button aria-label="Open menu" type="button"><Icon name="menu" /></button>
         <strong>My favorites</strong>
-        <button aria-label="Add favorite" type="button"><Icon name="plus" /></button>
+        <button aria-label="Add favorite" onClick={onAddFavorite} type="button">
+          <Icon name="plus" />
+        </button>
       </header>
 
       <section className="favorites-card">
@@ -18,7 +36,9 @@ export function FavoritesPage() {
             <h1>My favorites</h1>
             <p>Check the weather in your favorite places</p>
           </div>
-          <button className="primary-button" type="button"><Icon name="plus" size={18} /> Add favorite</button>
+          <button className="primary-button" onClick={onAddFavorite} type="button">
+            <Icon name="plus" size={18} /> Add favorite
+          </button>
         </header>
 
         <div className="favorites-table" role="table" aria-label="Favorite cities">
@@ -29,28 +49,72 @@ export function FavoritesPage() {
             <span role="columnheader">Min / Max</span>
             <span role="columnheader">Actions</span>
           </div>
-          {MOCK_FAVORITES.map((favorite) => {
-            const condition = getWeatherCondition(favorite.weatherCode)
+          {favorites.map((location) => {
+            const favorite = forecasts[location.id]
+            const condition = favorite
+              ? getWeatherCondition(favorite.weatherCode)
+              : null
 
             return (
-              <article className="favorite-row" key={favorite.location.id} role="row">
+              <article className="favorite-row" key={location.id} role="row">
                 <div className="favorite-location" role="cell">
-                  <span className={`city-thumbnail city-thumbnail--${favorite.location.countryCode.toLowerCase()}`} aria-hidden="true" />
-                  <span><strong>{favorite.location.name}</strong><small>{favorite.location.country}</small></span>
+                  <span className={`city-thumbnail city-thumbnail--${location.countryCode.toLowerCase()}`} aria-hidden="true" />
+                  <button
+                    className="favorite-location__button"
+                    onClick={() => onLocationSelect(location)}
+                    type="button"
+                  >
+                    <strong>{location.name}</strong>
+                    <small>{location.country}</small>
+                  </button>
                 </div>
                 <div className="favorite-condition" role="cell">
-                  <WeatherIcon code={favorite.weatherCode} />
-                  <span>{condition.label}</span>
+                  {favorite && <WeatherIcon code={favorite.weatherCode} />}
+                  <span>
+                    {condition?.label ?? (isLoading ? 'Loading…' : 'Unavailable')}
+                  </span>
                 </div>
-                <strong role="cell">{formatTemperature(favorite.temperature)}C</strong>
-                <span role="cell">{formatTemperature(favorite.maximumTemperature)} / {formatTemperature(favorite.minimumTemperature)}</span>
+                <strong role="cell">
+                  {favorite ? `${formatTemperature(favorite.temperature)}C` : '—'}
+                </strong>
+                <span role="cell">
+                  {favorite
+                    ? `${formatTemperature(favorite.maximumTemperature)} / ${formatTemperature(favorite.minimumTemperature)}`
+                    : '—'}
+                </span>
                 <div className="favorite-actions" role="cell">
-                  <button aria-label={`Remove ${favorite.location.name} from favorites`} className="favorite-button favorite-button--active" type="button"><Icon name="favorite" /></button>
-                  <button aria-label={`Delete ${favorite.location.name}`} type="button"><Icon name="trash" /></button>
+                  <button
+                    aria-label={`Remove ${location.name} from favorites`}
+                    aria-pressed="true"
+                    className="favorite-button favorite-button--active"
+                    onClick={() => onRemoveFavorite(location.id)}
+                    type="button"
+                  >
+                    <Icon name="favorite" />
+                  </button>
+                  <button
+                    aria-label={`Delete ${location.name}`}
+                    onClick={() => onRemoveFavorite(location.id)}
+                    type="button"
+                  >
+                    <Icon name="trash" />
+                  </button>
                 </div>
               </article>
             )
           })}
+          {favorites.length === 0 && (
+            <div className="favorites-empty" role="row">
+              <div role="cell">
+                <Icon name="favorite" size={28} />
+                <strong>No favorite cities yet</strong>
+                <p>Add a city to see its weather here.</p>
+                <button className="primary-button" onClick={onAddFavorite} type="button">
+                  <Icon name="plus" size={18} /> Add favorite
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </main>

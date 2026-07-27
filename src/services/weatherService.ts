@@ -4,12 +4,14 @@ import {
 } from '../api/openMeteoClient'
 import type {
   OpenMeteoDailyWeather,
+  OpenMeteoFavoriteForecastResponse,
   OpenMeteoForecastResponse,
   OpenMeteoGeocodingResponse,
   OpenMeteoHourlyWeather,
 } from '../api/openMeteo.types'
 import type {
   DailyForecast,
+  FavoriteWeather,
   HourlyForecast,
   Location,
   WeatherForecast,
@@ -163,4 +165,33 @@ export async function getWeatherForecast(
   })
 
   return mapForecast(response)
+}
+
+export async function getFavoriteWeather(
+  location: Location,
+  { signal }: GetForecastOptions = {},
+): Promise<FavoriteWeather> {
+  const params = new URLSearchParams({
+    latitude: String(location.latitude),
+    longitude: String(location.longitude),
+    current: 'temperature_2m,weather_code',
+    daily: 'temperature_2m_max,temperature_2m_min',
+    forecast_days: '1',
+    timezone: 'auto',
+  })
+
+  const response = await requestForecast<OpenMeteoFavoriteForecastResponse>({
+    params,
+    signal,
+  })
+
+  return {
+    location,
+    temperature: response.current.temperature_2m,
+    minimumTemperature:
+      response.daily.temperature_2m_min[0] ?? response.current.temperature_2m,
+    maximumTemperature:
+      response.daily.temperature_2m_max[0] ?? response.current.temperature_2m,
+    weatherCode: response.current.weather_code,
+  }
 }

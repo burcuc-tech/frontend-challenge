@@ -36,3 +36,12 @@ export interface WeatherForecast {
 export interface WeatherCondition {
   label: string
 }
+
+export interface FavoriteWeather {
+  location: Location
+  temperature: number
+  minimumTemperature: number
+  maximumTemperature: number
+  weatherCode: number
+}
+import type { Location } from './location'

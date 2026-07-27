@@ -47,3 +47,14 @@ export interface OpenMeteoForecastResponse {
   hourly: OpenMeteoHourlyWeather
   daily: OpenMeteoDailyWeather
 }
+
+export interface OpenMeteoFavoriteForecastResponse {
+  current: Pick<
+    OpenMeteoCurrentWeather,
+    'temperature_2m' | 'weather_code'
+  >
+  daily: Pick<
+    OpenMeteoDailyWeather,
+    'temperature_2m_max' | 'temperature_2m_min'
+  >
+}

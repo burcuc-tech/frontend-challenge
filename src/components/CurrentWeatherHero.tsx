@@ -15,12 +15,16 @@ import { WeatherIcon } from './WeatherIcon'
 
 interface CurrentWeatherHeroProps {
   forecast: WeatherForecast
+  isFavorite: boolean
   location: Location
+  onToggleFavorite: () => void
 }
 
 export function CurrentWeatherHero({
   forecast,
+  isFavorite,
   location,
+  onToggleFavorite,
 }: CurrentWeatherHeroProps) {
   const { current, daily } = forecast
   const condition = getWeatherCondition(current.weatherCode)
@@ -32,9 +36,21 @@ export function CurrentWeatherHero({
     <div className="weather-hero__content">
       <div className="location-heading">
         <div>
-          <h1 id="location-heading">
-            {formatLocation(location.name, location.country)}
-          </h1>
+          <div className="location-title">
+            <h1 id="location-heading">
+              {formatLocation(location.name, location.country)}
+            </h1>
+            <button
+              aria-label={`${isFavorite ? 'Remove' : 'Add'} ${location.name} ${isFavorite ? 'from' : 'to'} favorites`}
+              aria-pressed={isFavorite}
+              className={`favorite-button${isFavorite ? ' favorite-button--active' : ''}`}
+              onClick={onToggleFavorite}
+              title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+              type="button"
+            >
+              <Icon name="favorite" size={22} />
+            </button>
+          </div>
           <p>
             {formatDate(current.time, {
               weekday: 'long',
@@ -45,13 +61,6 @@ export function CurrentWeatherHero({
             })}
           </p>
         </div>
-        <button
-          aria-label={`Add ${location.name} to favorites`}
-          className="favorite-button"
-          type="button"
-        >
-          <Icon name="favorite" size={26} />
-        </button>
       </div>
 
       <div className="current-weather">

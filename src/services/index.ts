@@ -1,4 +1,5 @@
 export {
+  getFavoriteWeather,
   getWeatherForecast,
   searchCities,
   type GetForecastOptions,

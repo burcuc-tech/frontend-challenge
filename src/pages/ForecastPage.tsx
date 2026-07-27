@@ -10,16 +10,20 @@ import { SearchBar } from '../components/SearchBar'
 
 interface ForecastPageProps {
   forecast: WeatherForecast
+  isFavorite: boolean
   location: Location
   onLocationSelect: (location: Location) => void
+  onToggleFavorite: () => void
   requestedLocation: Location
   status: 'error' | 'loading' | 'success'
 }
 
 export function ForecastPage({
   forecast,
+  isFavorite,
   location,
   onLocationSelect,
+  onToggleFavorite,
   requestedLocation,
   status,
 }: ForecastPageProps) {
@@ -47,7 +51,16 @@ export function ForecastPage({
           {formatLocation(location.name, location.country)}
           <Icon name="down" size={14} />
         </button>
-        <button aria-label="Add to favorites" type="button"><Icon name="favorite" /></button>
+        <button
+          aria-label={`${isFavorite ? 'Remove' : 'Add'} ${location.name} ${isFavorite ? 'from' : 'to'} favorites`}
+          aria-pressed={isFavorite}
+          className={isFavorite ? 'favorite-button--active' : ''}
+          onClick={onToggleFavorite}
+          title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+          type="button"
+        >
+          <Icon name="favorite" />
+        </button>
       </header>
 
       {isMobileSearchOpen && (
@@ -72,7 +85,12 @@ export function ForecastPage({
           </div>
         )}
 
-        <CurrentWeatherHero forecast={forecast} location={location} />
+        <CurrentWeatherHero
+          forecast={forecast}
+          isFavorite={isFavorite}
+          location={location}
+          onToggleFavorite={onToggleFavorite}
+        />
 
         <div className="forecast-columns">
           <HourlyForecast
