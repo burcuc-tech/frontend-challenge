@@ -12,6 +12,7 @@ interface ForecastPageProps {
   forecast: WeatherForecast
   location: Location
   onLocationSelect: (location: Location) => void
+  requestedLocation: Location
   status: 'error' | 'loading' | 'success'
 }
 
@@ -19,6 +20,7 @@ export function ForecastPage({
   forecast,
   location,
   onLocationSelect,
+  requestedLocation,
   status,
 }: ForecastPageProps) {
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false)
@@ -28,7 +30,7 @@ export function ForecastPage({
   )
   const visibleHourlyForecasts = forecast.hourly.slice(
     Math.max(currentHourIndex, 0),
-    Math.max(currentHourIndex, 0) + 8,
+    Math.max(currentHourIndex, 0) + 24,
   )
   const currentDate = forecast.current.time.slice(0, 10)
 
@@ -65,16 +67,23 @@ export function ForecastPage({
         {status !== 'success' && (
           <div className={`forecast-status forecast-status--${status}`} role="status">
             {status === 'loading'
-              ? `Loading weather for ${location.name}…`
-              : `Weather for ${location.name} could not be loaded.`}
+              ? `Loading weather for ${requestedLocation.name}…`
+              : `Weather for ${requestedLocation.name} could not be loaded.`}
           </div>
         )}
 
         <CurrentWeatherHero forecast={forecast} location={location} />
 
         <div className="forecast-columns">
-          <HourlyForecast forecasts={visibleHourlyForecasts} />
-          <DailyForecast currentDate={currentDate} forecasts={forecast.daily} />
+          <HourlyForecast
+            forecasts={visibleHourlyForecasts}
+            key={`hourly-${location.id}`}
+          />
+          <DailyForecast
+            currentDate={currentDate}
+            forecasts={forecast.daily}
+            key={`daily-${location.id}`}
+          />
         </div>
       </section>
     </main>

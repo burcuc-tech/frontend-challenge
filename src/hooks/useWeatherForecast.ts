@@ -4,8 +4,15 @@ import type { Location, WeatherForecast } from '../types'
 
 type ForecastStatus = 'error' | 'loading' | 'success'
 
+interface LoadedForecast {
+  forecast: WeatherForecast
+  location: Location
+}
+
 export function useWeatherForecast(location: Location) {
-  const [forecast, setForecast] = useState<WeatherForecast | null>(null)
+  const [loadedForecast, setLoadedForecast] = useState<LoadedForecast | null>(
+    null,
+  )
   const [status, setStatus] = useState<ForecastStatus>('loading')
 
   useEffect(() => {
@@ -19,7 +26,10 @@ export function useWeatherForecast(location: Location) {
           signal: controller.signal,
         })
 
-        setForecast(nextForecast)
+        setLoadedForecast({
+          forecast: nextForecast,
+          location,
+        })
         setStatus('success')
       } catch (error) {
         if (error instanceof DOMException && error.name === 'AbortError') {
@@ -36,7 +46,8 @@ export function useWeatherForecast(location: Location) {
   }, [location])
 
   return {
-    forecast,
+    forecast: loadedForecast?.forecast ?? null,
+    forecastLocation: loadedForecast?.location ?? null,
     status,
   }
 }

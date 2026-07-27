@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { DailyForecast as DailyForecastData } from '../types'
 import { formatDate, formatTemperature } from '../utils'
 import { Panel } from './Panel'
@@ -9,19 +10,42 @@ interface DailyForecastProps {
   forecasts: DailyForecastData[]
 }
 
+const FORECASTS_PER_PAGE = 7
+
 export function DailyForecast({ currentDate, forecasts }: DailyForecastProps) {
   const currentDayIndex = forecasts.findIndex(
     (forecast) => forecast.date === currentDate,
   )
-  const firstVisibleIndex = Math.max(currentDayIndex, 0)
-  const visibleForecasts = forecasts.slice(
-    firstVisibleIndex,
-    firstVisibleIndex + 8,
+  const initialPage = Math.floor(
+    Math.max(currentDayIndex, 0) / FORECASTS_PER_PAGE,
   )
+  const [currentPage, setCurrentPage] = useState(initialPage)
+  const [isExpanded, setIsExpanded] = useState(false)
+  const totalPages = Math.ceil(forecasts.length / FORECASTS_PER_PAGE)
+  const safeCurrentPage = Math.min(currentPage, Math.max(totalPages - 1, 0))
+  const pageStart = safeCurrentPage * FORECASTS_PER_PAGE
+  const visibleForecasts = isExpanded
+    ? forecasts
+    : forecasts.slice(pageStart, pageStart + FORECASTS_PER_PAGE)
+  const placeholderCount = !isExpanded && forecasts.length > 0
+    ? FORECASTS_PER_PAGE - visibleForecasts.length
+    : 0
+  const pageNumbers = Array.from({ length: totalPages }, (_, index) => index)
 
   return (
-    <Panel title="30-day forecast" action={<button className="text-button" type="button">View more</button>}>
-      <div className="daily-list">
+    <Panel
+      title="30-day forecast"
+      action={(
+        <button
+          className="text-button"
+          onClick={() => setIsExpanded((expanded) => !expanded)}
+          type="button"
+        >
+          {isExpanded ? 'View less' : 'View more'}
+        </button>
+      )}
+    >
+      <div className={`daily-list${isExpanded ? ' daily-list--expanded' : ''}`}>
         {visibleForecasts.map((forecast) => {
           return (
             <article className={`daily-row${forecast.date === currentDate ? ' daily-row--active' : ''}`} key={forecast.date}>
@@ -35,16 +59,59 @@ export function DailyForecast({ currentDate, forecasts }: DailyForecastProps) {
             </article>
           )
         })}
+        {Array.from({ length: placeholderCount }, (_, index) => (
+          <div
+            className="daily-row daily-row--placeholder"
+            key={`placeholder-${index}`}
+          >
+            <span>Forecast unavailable</span>
+            <span aria-hidden="true">—</span>
+            <span aria-hidden="true">—</span>
+            <span
+              aria-hidden="true"
+              className="temperature-range temperature-range--empty"
+            />
+            <span aria-hidden="true">—</span>
+          </div>
+        ))}
+        {visibleForecasts.length === 0 && (
+          <p className="forecast-empty">No daily forecast available.</p>
+        )}
       </div>
-      <div className="pagination" aria-label="Forecast pagination">
-        <button aria-label="Previous page" disabled type="button"><Icon name="left" size={16} /></button>
-        <button className="pagination__active" type="button">1</button>
-        <button type="button">2</button>
-        <button type="button">3</button>
-        <span>…</span>
-        <button type="button">30</button>
-        <button aria-label="Next page" type="button"><Icon name="right" size={16} /></button>
-      </div>
+      {!isExpanded && totalPages > 0 && (
+        <nav className="pagination" aria-label="Forecast pagination">
+          <button
+            aria-label="Previous page"
+            disabled={safeCurrentPage === 0}
+            onClick={() => setCurrentPage((page) => Math.max(page - 1, 0))}
+            type="button"
+          >
+            <Icon name="left" size={16} />
+          </button>
+          {pageNumbers.map((page) => (
+            <button
+              aria-current={page === safeCurrentPage ? 'page' : undefined}
+              aria-label={`Page ${page + 1}`}
+              className={page === safeCurrentPage ? 'pagination__active' : ''}
+              key={page}
+              onClick={() => setCurrentPage(page)}
+              type="button"
+            >
+              {page + 1}
+            </button>
+          ))}
+          <button
+            aria-label="Next page"
+            disabled={safeCurrentPage === totalPages - 1}
+            onClick={() => setCurrentPage((page) => (
+              Math.min(page + 1, totalPages - 1)
+            ))}
+            type="button"
+          >
+            <Icon name="right" size={16} />
+          </button>
+        </nav>
+      )}
     </Panel>
   )
 }

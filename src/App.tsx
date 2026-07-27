@@ -10,8 +10,15 @@ import './styles/premium.css'
 
 function App() {
   const [activeView, setActiveView] = useState<ViewName>('forecast')
-  const [location, setLocation] = useState<Location>(DEFAULT_LOCATION)
-  const { forecast, status } = useWeatherForecast(location)
+  const [requestedLocation, setRequestedLocation] = useState<Location>(
+    DEFAULT_LOCATION,
+  )
+  const {
+    forecast,
+    forecastLocation,
+    status,
+  } = useWeatherForecast(requestedLocation)
+  const displayedLocation = forecastLocation ?? DEFAULT_LOCATION
 
   return (
     <div className="app-shell">
@@ -19,8 +26,9 @@ function App() {
       {activeView === 'forecast' ? (
         <ForecastPage
           forecast={forecast ?? MOCK_FORECAST}
-          location={location}
-          onLocationSelect={setLocation}
+          location={displayedLocation}
+          onLocationSelect={setRequestedLocation}
+          requestedLocation={requestedLocation}
           status={status}
         />
       ) : (

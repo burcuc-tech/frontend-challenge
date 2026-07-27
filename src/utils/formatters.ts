@@ -36,3 +36,11 @@ export function formatWindDirection(degrees: number): string {
 
   return directions[index]
 }
+
+export function getUvIndexLabel(value: number): string {
+  if (value <= 2) return 'Low'
+  if (value <= 5) return 'Moderate'
+  if (value <= 7) return 'High'
+  if (value <= 10) return 'Very high'
+  return 'Extreme'
+}

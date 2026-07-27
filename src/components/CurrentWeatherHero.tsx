@@ -7,6 +7,7 @@ import {
   formatTime,
   formatVisibility,
   formatWindDirection,
+  getUvIndexLabel,
 } from '../utils'
 import { Icon } from './Icon'
 import { MetricCard } from './MetricCard'
@@ -25,6 +26,7 @@ export function CurrentWeatherHero({
   const condition = getWeatherCondition(current.weatherCode)
   const currentDate = current.time.slice(0, 10)
   const currentDay = daily.find((day) => day.date === currentDate) ?? daily[0]
+  const uvIndex = currentDay?.uvIndex
 
   return (
     <div className="weather-hero__content">
@@ -87,11 +89,11 @@ export function CurrentWeatherHero({
 
       <div className="metric-cards">
         <MetricCard
-          detail="Moderate"
+          detail={uvIndex === undefined ? undefined : getUvIndexLabel(uvIndex)}
           icon="sun"
           kind="uv"
           label="UV Index"
-          value={String(Math.round(currentDay.uvIndex))}
+          value={uvIndex === undefined ? '—' : String(Math.round(uvIndex))}
         />
         <MetricCard
           icon="visibility"
@@ -103,13 +105,13 @@ export function CurrentWeatherHero({
           icon="sunrise"
           kind="sunrise"
           label="Sunrise"
-          value={formatTime(currentDay.sunrise)}
+          value={currentDay ? formatTime(currentDay.sunrise) : '—'}
         />
         <MetricCard
           icon="sunset"
           kind="sunset"
           label="Sunset"
-          value={formatTime(currentDay.sunset)}
+          value={currentDay ? formatTime(currentDay.sunset) : '—'}
         />
       </div>
     </div>

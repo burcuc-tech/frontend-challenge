@@ -5,4 +5,5 @@ export {
   formatTime,
   formatVisibility,
   formatWindDirection,
+  getUvIndexLabel,
 } from './formatters'

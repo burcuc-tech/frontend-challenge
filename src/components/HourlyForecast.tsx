@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { HourlyForecast as HourlyForecastData } from '../types'
 import { formatTemperature } from '../utils'
 import { Panel } from './Panel'
@@ -8,10 +9,24 @@ interface HourlyForecastProps {
 }
 
 export function HourlyForecast({ forecasts }: HourlyForecastProps) {
+  const [isExpanded, setIsExpanded] = useState(false)
+  const visibleForecasts = forecasts.slice(0, isExpanded ? 24 : 8)
+
   return (
-    <Panel title="Hourly forecast" action={<button className="text-button" type="button">View more</button>}>
+    <Panel
+      title="Hourly forecast"
+      action={(
+        <button
+          className="text-button"
+          onClick={() => setIsExpanded((expanded) => !expanded)}
+          type="button"
+        >
+          {isExpanded ? 'View less' : 'View more'}
+        </button>
+      )}
+    >
       <div className="hourly-list">
-        {forecasts.map((forecast, index) => (
+        {visibleForecasts.map((forecast, index) => (
           <article className={`hourly-item${index === 0 ? ' hourly-item--active' : ''}`} key={forecast.time}>
             <time dateTime={forecast.time}>
               {index === 0 ? 'Now' : forecast.time.slice(11, 16)}
@@ -20,6 +35,9 @@ export function HourlyForecast({ forecasts }: HourlyForecastProps) {
             <strong>{formatTemperature(forecast.temperature)}</strong>
           </article>
         ))}
+        {visibleForecasts.length === 0 && (
+          <p className="forecast-empty">No hourly forecast available.</p>
+        )}
       </div>
     </Panel>
   )

@@ -543,6 +543,13 @@ button {
   gap: var(--space-1);
 }
 
+.daily-list--expanded {
+  align-content: start;
+  overflow-y: auto;
+  padding-right: var(--space-2);
+  scrollbar-width: thin;
+}
+
 .daily-row {
   display: grid;
   grid-template-columns: minmax(6.5rem, 1.2fr) 2rem 2rem minmax(4rem, 1fr) 2rem;
@@ -553,10 +560,32 @@ button {
   font-size: var(--font-size-sm);
 }
 
+.daily-row--placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.48;
+}
+
+.daily-row--placeholder > span:first-child {
+  font-size: 0.75rem;
+}
+
+.forecast-empty {
+  align-self: center;
+  margin: auto;
+  padding: var(--space-6);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
 .temperature-range {
   height: 0.2rem;
   border-radius: 999px;
   background: linear-gradient(90deg, #2999eb, #20cfb0, #ffd027);
+}
+
+.temperature-range--empty {
+  background: rgb(255 255 255 / 12%);
 }
 
 .pagination {
@@ -1099,8 +1128,16 @@ button {
     font-size: 0.75rem;
   }
 
-  .daily-row:nth-child(n + 6) {
+  .daily-row:nth-child(n + 8) {
     display: none;
+  }
+
+  .daily-list--expanded {
+    max-height: 21rem;
+  }
+
+  .daily-list--expanded .daily-row:nth-child(n + 8) {
+    display: grid;
   }
 
   .pagination {
