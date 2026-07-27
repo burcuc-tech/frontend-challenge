@@ -70,6 +70,12 @@ I used controlled CSS with shared theme variables and responsive rules. Tailwind
 
 The mobile version is not only a scaled-down desktop view. Navigation moves to the bottom, content groups are reorganized, hourly items become horizontally scrollable, and favorites use a card layout.
 
+### Hero background image
+
+The hero background uses a mountain-and-lake image generated with an AI image tool, since the initial reference images did not match the composition described by the design: a mountain positioned to the left, a visible lake surface, and enough room for readable text.
+
+The first version of this image was large enough to noticeably delay the initial page load, especially in the hero section where it matters most for perceived performance. I converted it to WebP and reduced it to roughly 175 KB, which preserved visual quality while significantly improving initial load performance.
+
 ### Routing
 
 The MVP has two application views, Forecast and Favorites. I kept view switching in local application state rather than adding a routing dependency because URL-based navigation was not required by the challenge.
@@ -91,15 +97,25 @@ I added Vitest tests for:
 - Temperature-unit controls
 - Daily pagination boundaries
 
-Service tests mock `fetch`, making them deterministic and independent of network availability.
+The current suite has 44 tests across 8 test files, all passing. Service tests mock `fetch`, making them deterministic and independent of network availability. Component tests use React Testing Library and jsdom to cover real user interactions such as keyboard navigation and retry actions instead of testing only implementation details.
+
+Automated coverage focuses on domain logic, the API service boundary, and the most important component interactions. Full end-to-end browser coverage was not added in this MVP.
 
 ## AI Usage
 
 ### Which AI tools did you use?
 
-I used OpenAI Codex as a development assistant.
+I used a combination of AI tools for different purposes during development:
+
+- **Claude**, for early planning, architecture discussions, and working through project setup and technical trade-offs before writing code.
+- **Gemini**, for feedback on interpreting the visual mockup where the design left room for judgment.
+- **OpenAI Codex**, as the main implementation assistant for writing code, iterating on components, generating tests, and drafting documentation.
 
 ### How did these tools help you?
+
+Claude helped me think through the initial project structure, plan the sprint into stages, and reason about API constraints such as Open-Meteo's forecast horizon before committing to an implementation approach.
+
+Gemini gave me a second perspective on visual and UX decisions where the mockup was guidance rather than a strict specification, particularly around the hero background composition.
 
 Codex helped me:
 
@@ -138,6 +154,7 @@ Other important challenges included:
 - Keeping favorite weather requests independent from one another
 - Handling invalid or inaccessible browser storage safely
 - Keeping temperatures consistent across every view when switching units
+- Keeping the AI-generated hero image visually on-brief while controlling its file size so it did not slow down the initial page load
 
 ## Trade-offs
 
@@ -158,12 +175,13 @@ With another sprint, I would:
 - Introduce URL routing and shareable city URLs
 - Add a more complete loading skeleton and an application-level error boundary
 - Improve focus management and announce asynchronous results to screen readers
-- Expand reduced-motion support
+- Validate reduced-motion behavior as new animations and transitions are introduced
 - Split the main stylesheet further by feature
 - Add responsive image variants with `srcset`
 - Add caching with expiration for recently requested forecasts
 - Implement the World Map, Alerts, and Settings experiences
 - Use a weather provider capable of delivering a genuine 30-day future forecast
+- Run a full accessibility audit rather than relying only on the semantic groundwork completed so far
 
 ## Self Assessment
 
@@ -184,6 +202,16 @@ I would also consider consolidating asynchronous state handling into a small sha
 I would investigate the forecast provider's maximum future horizon before finalizing the daily forecast interaction. That would allow the product and API decision to be made earlier.
 
 I would also add the test runner near the beginning of development and write formatter and service tests alongside each feature rather than adding the first automated suite near the end.
+
+## A Note on Accessibility
+
+Semantic roles (`table`, `row`, `columnheader`, and `cell`) were added to the Favorites view. Icon-only buttons have accessible names, while decorative Lucide icons are hidden from assistive technologies with `aria-hidden`.
+
+I applied `aria-hidden` inside the shared `Icon` component instead of repeating it at every usage. This makes the correct decorative-icon behavior the default and reduces the risk of forgetting it when new interface icons are added. Weather icons are handled differently because they communicate meaningful condition information: `WeatherIcon` uses `role="img"` and an accessible label derived from the centralized WMO mapping.
+
+Interactive elements such as favorite toggles and unit switches use `aria-pressed`, and pagination uses `aria-current` for the active page.
+
+This is groundwork, not a full accessibility audit. I have not run an end-to-end screen-reader pass or automated accessibility testing such as axe, so I would describe the current state as accessibility-aware rather than WCAG-verified. It would be one of my first priorities with more time.
 
 ## Questions
 
