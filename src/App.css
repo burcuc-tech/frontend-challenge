@@ -271,6 +271,9 @@ button {
   top: var(--space-4);
   left: 50%;
   z-index: 8;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
   padding: var(--space-2) var(--space-4);
   border: 1px solid var(--color-border);
   border-radius: 999px;
@@ -284,6 +287,50 @@ button {
 .forecast-status--error {
   border-color: rgb(255 107 114 / 32%);
   color: #ffb8bc;
+}
+
+.forecast-status button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+.forecast-state {
+  display: grid;
+  min-height: 38rem;
+  grid-column: 1 / -1;
+  place-content: center;
+  justify-items: center;
+  padding: var(--space-8);
+  text-align: center;
+}
+
+.forecast-state .icon {
+  color: var(--color-accent);
+}
+
+.forecast-state h1 {
+  max-width: 36rem;
+  margin: var(--space-4) 0 var(--space-2);
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+}
+
+.forecast-state p {
+  max-width: 32rem;
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.forecast-state .primary-button {
+  margin-top: var(--space-6);
+}
+
+.forecast-state--error .icon {
+  color: var(--color-danger);
 }
 
 .weather-hero__content {
@@ -968,9 +1015,20 @@ button {
   .forecast-status {
     top: var(--space-2);
     max-width: calc(100% - var(--space-8));
+  }
+
+  .forecast-status span {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .forecast-status button {
+    flex: none;
+  }
+
+  .forecast-state {
+    min-height: calc(100vh - 8rem);
   }
 
   .weather-hero {

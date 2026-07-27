@@ -13,9 +13,10 @@ A responsive weather dashboard built for Sprint #24 with React and TypeScript. U
 - Live weather summaries on the Favorites page
 - Persistent Celsius and Fahrenheit preference
 - Loading, error, empty, and unavailable states
+- Retry action for failed forecast requests without displaying mock weather
 - Responsive desktop and mobile layouts
 - Keyboard-accessible search suggestions and semantic toggle controls
-- Automated tests for formatters, WMO mappings, and weather services
+- Automated tests for domain utilities, weather services, and critical UI flows
 
 ## Tech Stack
 
@@ -121,6 +122,9 @@ The automated suite covers:
 - Geocoding query construction and response mapping
 - Forecast and favorite-summary request parameters
 - Forecast response mapping and HTTP error handling
+- Keyboard city selection and forecast error/retry behavior
+- Favorite persistence and temperature-unit controls
+- Daily pagination navigation and boundary states
 
 Network-dependent service tests use controlled `fetch` mocks, keeping the suite deterministic and usable offline.
 
@@ -138,7 +142,7 @@ The Sprint #24 acceptance criteria for city search, weather display, favorites, 
 
 With more time, I would:
 
-- Add component and end-to-end tests for the main user journeys
+- Add end-to-end tests for complete browser-based user journeys
 - Introduce URL routing and shareable city links
 - Improve loading feedback with skeletons and an application-level error boundary
 - Expand focus management and screen-reader announcements for asynchronous states

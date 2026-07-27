@@ -13,6 +13,7 @@ export function useWeatherForecast(location: Location) {
   const [loadedForecast, setLoadedForecast] = useState<LoadedForecast | null>(
     null,
   )
+  const [requestVersion, setRequestVersion] = useState(0)
   const [status, setStatus] = useState<ForecastStatus>('loading')
 
   useEffect(() => {
@@ -43,11 +44,12 @@ export function useWeatherForecast(location: Location) {
     void loadForecast()
 
     return () => controller.abort()
-  }, [location])
+  }, [location, requestVersion])
 
   return {
     forecast: loadedForecast?.forecast ?? null,
     forecastLocation: loadedForecast?.location ?? null,
+    retryForecast: () => setRequestVersion((version) => version + 1),
     status,
   }
 }

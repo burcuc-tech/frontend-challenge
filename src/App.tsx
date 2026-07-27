@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Navigation, type ViewName } from './components/Navigation'
-import { DEFAULT_LOCATION, MOCK_FORECAST } from './constants'
+import { DEFAULT_LOCATION } from './constants'
 import {
   useFavorites,
   useTemperatureUnit,
@@ -30,9 +30,10 @@ function App() {
   const {
     forecast,
     forecastLocation,
+    retryForecast,
     status,
   } = useWeatherForecast(requestedLocation)
-  const displayedLocation = forecastLocation ?? DEFAULT_LOCATION
+  const displayedLocation = forecastLocation ?? requestedLocation
   const displayedLocationIsFavorite = isFavorite(displayedLocation.id)
 
   function openFavorite(location: Location) {
@@ -50,10 +51,11 @@ function App() {
       />
       {activeView === 'forecast' ? (
         <ForecastPage
-          forecast={forecast ?? MOCK_FORECAST}
+          forecast={forecast}
           isFavorite={displayedLocationIsFavorite}
           location={displayedLocation}
           onLocationSelect={setRequestedLocation}
+          onRetry={retryForecast}
           onToggleFavorite={() => toggleFavorite(displayedLocation)}
           requestedLocation={requestedLocation}
           status={status}

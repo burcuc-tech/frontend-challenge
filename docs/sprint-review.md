@@ -12,6 +12,7 @@ The application also supports:
 - Live weather summaries for saved cities
 - Persistent Celsius and Fahrenheit selection
 - Loading, error, empty, and unavailable states
+- Retry behavior for failed forecast requests
 - Desktop and mobile layouts
 
 Weather and geocoding data come from Open-Meteo.
@@ -84,6 +85,11 @@ I added Vitest tests for:
 - Forecast and favorite-summary query parameters
 - Forecast response mapping
 - API and non-JSON HTTP error handling
+- Keyboard-based city selection
+- Forecast error and retry presentation
+- Favorite persistence and removal
+- Temperature-unit controls
+- Daily pagination boundaries
 
 Service tests mock `fetch`, making them deterministic and independent of network availability.
 
@@ -141,13 +147,13 @@ I used state-based view switching rather than URL routing. This is sufficient fo
 
 World Map, Alerts, Settings, account actions, and Premium actions remain visual placeholders. They were present in the design but were outside the required user stories, so I prioritized the core search, forecast, favorites, and pagination flows.
 
-I focused automated tests on domain logic and the API service boundary. Full component and end-to-end browser coverage would be valuable, but it was postponed in favor of completing and validating the core MVP.
+I focused automated tests on domain logic, the API service boundary, and the most important component interactions. Full end-to-end browser coverage would still be valuable, but it was postponed in favor of completing and validating the core MVP.
 
 ## Improvements
 
 With another sprint, I would:
 
-- Add component tests for search interactions, loading states, and favorite actions
+- Expand component coverage for loading states and favorite weather summaries
 - Add end-to-end tests for the main user journeys
 - Introduce URL routing and shareable city URLs
 - Add a more complete loading skeleton and an application-level error boundary

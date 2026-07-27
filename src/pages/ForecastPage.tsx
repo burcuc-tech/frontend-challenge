@@ -13,10 +13,11 @@ import { Icon } from '../components/Icon'
 import { SearchBar } from '../components/SearchBar'
 
 interface ForecastPageProps {
-  forecast: WeatherForecast
+  forecast: WeatherForecast | null
   isFavorite: boolean
   location: Location
   onLocationSelect: (location: Location) => void
+  onRetry: () => void
   onToggleFavorite: () => void
   requestedLocation: Location
   status: 'error' | 'loading' | 'success'
@@ -28,21 +29,22 @@ export function ForecastPage({
   isFavorite,
   location,
   onLocationSelect,
+  onRetry,
   onToggleFavorite,
   requestedLocation,
   status,
   temperatureUnit,
 }: ForecastPageProps) {
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false)
-  const currentHour = forecast.current.time.slice(0, 13)
-  const currentHourIndex = forecast.hourly.findIndex(
+  const currentHour = forecast?.current.time.slice(0, 13) ?? ''
+  const currentHourIndex = forecast?.hourly.findIndex(
     (hour) => hour.time.slice(0, 13) === currentHour,
-  )
-  const visibleHourlyForecasts = forecast.hourly.slice(
+  ) ?? -1
+  const visibleHourlyForecasts = forecast?.hourly.slice(
     Math.max(currentHourIndex, 0),
     Math.max(currentHourIndex, 0) + 24,
-  )
-  const currentDate = forecast.current.time.slice(0, 10)
+  ) ?? []
+  const currentDate = forecast?.current.time.slice(0, 10) ?? ''
 
   return (
     <main className="forecast-page">
@@ -83,35 +85,73 @@ export function ForecastPage({
       <DesktopToolbar onLocationSelect={onLocationSelect} />
 
       <section className="weather-hero" aria-labelledby="location-heading">
-        {status !== 'success' && (
-          <div className={`forecast-status forecast-status--${status}`} role="status">
-            {status === 'loading'
-              ? `Loading weather for ${requestedLocation.name}…`
-              : `Weather for ${requestedLocation.name} could not be loaded.`}
+        {forecast && status !== 'success' && (
+          <div
+            aria-live="polite"
+            className={`forecast-status forecast-status--${status}`}
+            role={status === 'error' ? 'alert' : 'status'}
+          >
+            <span>
+              {status === 'loading'
+                ? `Loading weather for ${requestedLocation.name}…`
+                : `Weather for ${requestedLocation.name} could not be loaded.`}
+            </span>
+            {status === 'error' && (
+              <button onClick={onRetry} type="button">Try again</button>
+            )}
           </div>
         )}
 
-        <CurrentWeatherHero
-          forecast={forecast}
-          isFavorite={isFavorite}
-          location={location}
-          onToggleFavorite={onToggleFavorite}
-          temperatureUnit={temperatureUnit}
-        />
+        {!forecast && (
+          <div
+            aria-live="polite"
+            className={`forecast-state forecast-state--${status}`}
+            role={status === 'error' ? 'alert' : 'status'}
+          >
+            <Icon name={status === 'error' ? 'alert' : 'sun'} size={30} />
+            <h1 id="location-heading">
+              {status === 'loading'
+                ? `Loading weather for ${requestedLocation.name}`
+                : `Weather for ${requestedLocation.name} is unavailable`}
+            </h1>
+            <p>
+              {status === 'loading'
+                ? 'Current conditions and forecasts are on the way.'
+                : 'Check your connection and try the request again.'}
+            </p>
+            {status === 'error' && (
+              <button className="primary-button" onClick={onRetry} type="button">
+                Try again
+              </button>
+            )}
+          </div>
+        )}
 
-        <div className="forecast-columns">
-          <HourlyForecast
-            forecasts={visibleHourlyForecasts}
-            key={`hourly-${location.id}`}
-            temperatureUnit={temperatureUnit}
-          />
-          <DailyForecast
-            currentDate={currentDate}
-            forecasts={forecast.daily}
-            key={`daily-${location.id}`}
-            temperatureUnit={temperatureUnit}
-          />
-        </div>
+        {forecast && (
+          <>
+            <CurrentWeatherHero
+              forecast={forecast}
+              isFavorite={isFavorite}
+              location={location}
+              onToggleFavorite={onToggleFavorite}
+              temperatureUnit={temperatureUnit}
+            />
+
+            <div className="forecast-columns">
+              <HourlyForecast
+                forecasts={visibleHourlyForecasts}
+                key={`hourly-${location.id}`}
+                temperatureUnit={temperatureUnit}
+              />
+              <DailyForecast
+                currentDate={currentDate}
+                forecasts={forecast.daily}
+                key={`daily-${location.id}`}
+                temperatureUnit={temperatureUnit}
+              />
+            </div>
+          </>
+        )}
       </section>
     </main>
   )
