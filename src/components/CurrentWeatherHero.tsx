@@ -1,11 +1,24 @@
-import { DEFAULT_LOCATION, getWeatherCondition, MOCK_CURRENT } from '../constants'
-import { formatDate, formatLocation, formatTemperature } from '../utils'
+import {
+  DEFAULT_LOCATION,
+  getWeatherCondition,
+  MOCK_CURRENT,
+  MOCK_DAILY,
+} from '../constants'
+import {
+  formatDate,
+  formatLocation,
+  formatTemperature,
+  formatTime,
+  formatVisibility,
+  formatWindDirection,
+} from '../utils'
 import { Icon } from './Icon'
 import { MetricCard } from './MetricCard'
 import { WeatherIcon } from './WeatherIcon'
 
 export function CurrentWeatherHero() {
   const condition = getWeatherCondition(MOCK_CURRENT.weatherCode)
+  const currentDay = MOCK_DAILY[0]
 
   return (
     <div className="weather-hero__content">
@@ -52,7 +65,7 @@ export function CurrentWeatherHero() {
         <div>
           <Icon name="wind" />
           <strong>{MOCK_CURRENT.windSpeed} km/h</strong>
-          <span>SW</span>
+          <span>{formatWindDirection(MOCK_CURRENT.windDirection)}</span>
         </div>
         <div>
           <Icon name="humidity" />
@@ -72,16 +85,26 @@ export function CurrentWeatherHero() {
           icon="sun"
           kind="uv"
           label="UV Index"
-          value="3"
+          value={String(Math.round(currentDay.uvIndex))}
         />
         <MetricCard
           icon="visibility"
           kind="visibility"
           label="Visibility"
-          value="10 km"
+          value={formatVisibility(MOCK_CURRENT.visibility)}
         />
-        <MetricCard icon="sunrise" kind="sunrise" label="Sunrise" value="04:12" />
-        <MetricCard icon="sunset" kind="sunset" label="Sunset" value="22:45" />
+        <MetricCard
+          icon="sunrise"
+          kind="sunrise"
+          label="Sunrise"
+          value={formatTime(currentDay.sunrise)}
+        />
+        <MetricCard
+          icon="sunset"
+          kind="sunset"
+          label="Sunset"
+          value={formatTime(currentDay.sunset)}
+        />
       </div>
     </div>
   )

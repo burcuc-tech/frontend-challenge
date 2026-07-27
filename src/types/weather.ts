@@ -4,7 +4,9 @@ export interface CurrentWeather {
   apparentTemperature: number
   humidity: number
   pressure: number
+  windDirection: number
   windSpeed: number
+  visibility: number
   weatherCode: number
 }
 
@@ -18,6 +20,9 @@ export interface DailyForecast {
   date: string
   minimumTemperature: number
   maximumTemperature: number
+  sunrise: string
+  sunset: string
+  uvIndex: number
   weatherCode: number
 }
 

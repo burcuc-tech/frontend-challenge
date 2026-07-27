@@ -1,1 +1,8 @@
-export { formatDate, formatLocation, formatTemperature } from './formatters'
+export {
+  formatDate,
+  formatLocation,
+  formatTemperature,
+  formatTime,
+  formatVisibility,
+  formatWindDirection,
+} from './formatters'
