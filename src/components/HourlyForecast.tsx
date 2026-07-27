@@ -1,14 +1,21 @@
 import { useState } from 'react'
-import type { HourlyForecast as HourlyForecastData } from '../types'
+import type {
+  HourlyForecast as HourlyForecastData,
+  TemperatureUnit,
+} from '../types'
 import { formatTemperature } from '../utils'
 import { Panel } from './Panel'
 import { WeatherIcon } from './WeatherIcon'
 
 interface HourlyForecastProps {
   forecasts: HourlyForecastData[]
+  temperatureUnit: TemperatureUnit
 }
 
-export function HourlyForecast({ forecasts }: HourlyForecastProps) {
+export function HourlyForecast({
+  forecasts,
+  temperatureUnit,
+}: HourlyForecastProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const visibleForecasts = forecasts.slice(0, isExpanded ? 24 : 8)
 
@@ -32,7 +39,9 @@ export function HourlyForecast({ forecasts }: HourlyForecastProps) {
               {index === 0 ? 'Now' : forecast.time.slice(11, 16)}
             </time>
             <WeatherIcon code={forecast.weatherCode} />
-            <strong>{formatTemperature(forecast.temperature)}</strong>
+            <strong>
+              {formatTemperature(forecast.temperature, temperatureUnit)}
+            </strong>
           </article>
         ))}
         {visibleForecasts.length === 0 && (

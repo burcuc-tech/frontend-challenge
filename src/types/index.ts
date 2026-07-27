@@ -4,6 +4,7 @@ export type {
   DailyForecast,
   FavoriteWeather,
   HourlyForecast,
+  TemperatureUnit,
   WeatherCondition,
   WeatherForecast,
 } from './weather'

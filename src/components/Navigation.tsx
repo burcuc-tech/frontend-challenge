@@ -1,12 +1,15 @@
 import { Icon, type IconName } from './Icon'
 import { WeatherIcon } from './WeatherIcon'
 import mariaAvatar from '../assets/maria-avatar.webp'
+import type { TemperatureUnit } from '../types'
 
 export type ViewName = 'forecast' | 'favorites'
 
 interface NavigationProps {
   activeView: ViewName
   onViewChange: (view: ViewName) => void
+  onTemperatureUnitChange: (unit: TemperatureUnit) => void
+  temperatureUnit: TemperatureUnit
 }
 
 interface NavigationItem {
@@ -23,7 +26,12 @@ const navigationItems: NavigationItem[] = [
   { icon: 'settings', label: 'Settings' },
 ]
 
-export function Navigation({ activeView, onViewChange }: NavigationProps) {
+export function Navigation({
+  activeView,
+  onTemperatureUnitChange,
+  onViewChange,
+  temperatureUnit,
+}: NavigationProps) {
   return (
     <>
       <aside className="sidebar">
@@ -52,8 +60,22 @@ export function Navigation({ activeView, onViewChange }: NavigationProps) {
 
         <div className="sidebar__footer">
           <div className="unit-switch" aria-label="Temperature unit">
-            <button className="unit-switch__active" type="button">°C</button>
-            <button type="button">°F</button>
+            <button
+              aria-pressed={temperatureUnit === 'celsius'}
+              className={temperatureUnit === 'celsius' ? 'unit-switch__active' : ''}
+              onClick={() => onTemperatureUnitChange('celsius')}
+              type="button"
+            >
+              °C
+            </button>
+            <button
+              aria-pressed={temperatureUnit === 'fahrenheit'}
+              className={temperatureUnit === 'fahrenheit' ? 'unit-switch__active' : ''}
+              onClick={() => onTemperatureUnitChange('fahrenheit')}
+              type="button"
+            >
+              °F
+            </button>
           </div>
           <div className="profile">
             <img className="profile__avatar" src={mariaAvatar} alt="" />

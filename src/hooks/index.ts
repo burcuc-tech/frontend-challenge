@@ -1,4 +1,5 @@
 export { useCitySearch } from './useCitySearch'
 export { useFavoriteForecasts } from './useFavoriteForecasts'
 export { useFavorites } from './useFavorites'
+export { useTemperatureUnit } from './useTemperatureUnit'
 export { useWeatherForecast } from './useWeatherForecast'

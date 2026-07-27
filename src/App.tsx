@@ -1,7 +1,11 @@
 import { useState } from 'react'
 import { Navigation, type ViewName } from './components/Navigation'
 import { DEFAULT_LOCATION, MOCK_FORECAST } from './constants'
-import { useFavorites, useWeatherForecast } from './hooks'
+import {
+  useFavorites,
+  useTemperatureUnit,
+  useWeatherForecast,
+} from './hooks'
 import { FavoritesPage } from './pages/FavoritesPage'
 import { ForecastPage } from './pages/ForecastPage'
 import type { Location } from './types'
@@ -20,6 +24,10 @@ function App() {
     toggleFavorite,
   } = useFavorites()
   const {
+    setTemperatureUnit,
+    temperatureUnit,
+  } = useTemperatureUnit()
+  const {
     forecast,
     forecastLocation,
     status,
@@ -34,7 +42,12 @@ function App() {
 
   return (
     <div className="app-shell">
-      <Navigation activeView={activeView} onViewChange={setActiveView} />
+      <Navigation
+        activeView={activeView}
+        onTemperatureUnitChange={setTemperatureUnit}
+        onViewChange={setActiveView}
+        temperatureUnit={temperatureUnit}
+      />
       {activeView === 'forecast' ? (
         <ForecastPage
           forecast={forecast ?? MOCK_FORECAST}
@@ -44,6 +57,7 @@ function App() {
           onToggleFavorite={() => toggleFavorite(displayedLocation)}
           requestedLocation={requestedLocation}
           status={status}
+          temperatureUnit={temperatureUnit}
         />
       ) : (
         <FavoritesPage
@@ -51,6 +65,7 @@ function App() {
           onAddFavorite={() => setActiveView('forecast')}
           onLocationSelect={openFavorite}
           onRemoveFavorite={removeFavorite}
+          temperatureUnit={temperatureUnit}
         />
       )}
     </div>

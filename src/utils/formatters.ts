@@ -1,7 +1,25 @@
+import type { TemperatureUnit } from '../types'
+
 const DEFAULT_LOCALE = 'en-US'
 
-export function formatTemperature(value: number): string {
-  return `${Math.round(value)}°`
+export function convertTemperature(
+  valueInCelsius: number,
+  unit: TemperatureUnit,
+): number {
+  return unit === 'fahrenheit'
+    ? (valueInCelsius * 9) / 5 + 32
+    : valueInCelsius
+}
+
+export function formatTemperature(
+  valueInCelsius: number,
+  unit: TemperatureUnit = 'celsius',
+  includeUnit = false,
+): string {
+  const value = Math.round(convertTemperature(valueInCelsius, unit))
+  const unitLabel = unit === 'fahrenheit' ? 'F' : 'C'
+
+  return `${value}°${includeUnit ? unitLabel : ''}`
 }
 
 export function formatDate(

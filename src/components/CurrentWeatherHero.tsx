@@ -1,5 +1,5 @@
 import { getWeatherCondition } from '../constants'
-import type { Location, WeatherForecast } from '../types'
+import type { Location, TemperatureUnit, WeatherForecast } from '../types'
 import {
   formatDate,
   formatLocation,
@@ -18,6 +18,7 @@ interface CurrentWeatherHeroProps {
   isFavorite: boolean
   location: Location
   onToggleFavorite: () => void
+  temperatureUnit: TemperatureUnit
 }
 
 export function CurrentWeatherHero({
@@ -25,6 +26,7 @@ export function CurrentWeatherHero({
   isFavorite,
   location,
   onToggleFavorite,
+  temperatureUnit,
 }: CurrentWeatherHeroProps) {
   const { current, daily } = forecast
   const condition = getWeatherCondition(current.weatherCode)
@@ -65,17 +67,22 @@ export function CurrentWeatherHero({
 
       <div className="current-weather">
         <span className="current-weather__temperature">
-          {formatTemperature(current.temperature)}
+          {formatTemperature(current.temperature, temperatureUnit)}
         </span>
-        <span className="current-weather__unit">C</span>
+        <span className="current-weather__unit">
+          {temperatureUnit === 'fahrenheit' ? 'F' : 'C'}
+        </span>
       </div>
       <h2>{condition.label}</h2>
-      <p>Feels like {formatTemperature(current.apparentTemperature)}C</p>
+      <p>
+        Feels like{' '}
+        {formatTemperature(current.apparentTemperature, temperatureUnit, true)}
+      </p>
 
       <article className="now-card">
         <span>NOW</span>
         <WeatherIcon code={current.weatherCode} />
-        <strong>{formatTemperature(current.temperature)}</strong>
+        <strong>{formatTemperature(current.temperature, temperatureUnit)}</strong>
       </article>
 
       <div className="weather-metrics">

@@ -1,5 +1,8 @@
 import { useState } from 'react'
-import type { DailyForecast as DailyForecastData } from '../types'
+import type {
+  DailyForecast as DailyForecastData,
+  TemperatureUnit,
+} from '../types'
 import { formatDate, formatTemperature } from '../utils'
 import { Panel } from './Panel'
 import { WeatherIcon } from './WeatherIcon'
@@ -8,11 +11,16 @@ import { Icon } from './Icon'
 interface DailyForecastProps {
   currentDate: string
   forecasts: DailyForecastData[]
+  temperatureUnit: TemperatureUnit
 }
 
 const FORECASTS_PER_PAGE = 7
 
-export function DailyForecast({ currentDate, forecasts }: DailyForecastProps) {
+export function DailyForecast({
+  currentDate,
+  forecasts,
+  temperatureUnit,
+}: DailyForecastProps) {
   const currentDayIndex = forecasts.findIndex(
     (forecast) => forecast.date === currentDate,
   )
@@ -53,9 +61,19 @@ export function DailyForecast({ currentDate, forecasts }: DailyForecastProps) {
                 {formatDate(`${forecast.date}T12:00`, { weekday: 'short', month: 'short', day: 'numeric' })}
               </time>
               <WeatherIcon code={forecast.weatherCode} />
-              <span>{formatTemperature(forecast.minimumTemperature)}</span>
+              <span>
+                {formatTemperature(
+                  forecast.minimumTemperature,
+                  temperatureUnit,
+                )}
+              </span>
               <span className="temperature-range" aria-hidden="true" />
-              <strong>{formatTemperature(forecast.maximumTemperature)}</strong>
+              <strong>
+                {formatTemperature(
+                  forecast.maximumTemperature,
+                  temperatureUnit,
+                )}
+              </strong>
             </article>
           )
         })}

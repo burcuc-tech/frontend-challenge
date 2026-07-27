@@ -1,6 +1,6 @@
 import { getWeatherCondition } from '../constants'
 import { useFavoriteForecasts } from '../hooks'
-import type { Location } from '../types'
+import type { Location, TemperatureUnit } from '../types'
 import { formatTemperature } from '../utils'
 import { Icon } from '../components/Icon'
 import { WeatherIcon } from '../components/WeatherIcon'
@@ -10,6 +10,7 @@ interface FavoritesPageProps {
   onAddFavorite: () => void
   onLocationSelect: (location: Location) => void
   onRemoveFavorite: (locationId: number) => void
+  temperatureUnit: TemperatureUnit
 }
 
 export function FavoritesPage({
@@ -17,6 +18,7 @@ export function FavoritesPage({
   onAddFavorite,
   onLocationSelect,
   onRemoveFavorite,
+  temperatureUnit,
 }: FavoritesPageProps) {
   const { forecasts, isLoading } = useFavoriteForecasts(favorites)
 
@@ -75,11 +77,17 @@ export function FavoritesPage({
                   </span>
                 </div>
                 <strong role="cell">
-                  {favorite ? `${formatTemperature(favorite.temperature)}C` : '—'}
+                  {favorite
+                    ? formatTemperature(
+                        favorite.temperature,
+                        temperatureUnit,
+                        true,
+                      )
+                    : '—'}
                 </strong>
                 <span role="cell">
                   {favorite
-                    ? `${formatTemperature(favorite.maximumTemperature)} / ${formatTemperature(favorite.minimumTemperature)}`
+                    ? `${formatTemperature(favorite.maximumTemperature, temperatureUnit)} / ${formatTemperature(favorite.minimumTemperature, temperatureUnit)}`
                     : '—'}
                 </span>
                 <div className="favorite-actions" role="cell">

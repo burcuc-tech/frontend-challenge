@@ -1,5 +1,9 @@
 import { useState } from 'react'
-import type { Location, WeatherForecast } from '../types'
+import type {
+  Location,
+  TemperatureUnit,
+  WeatherForecast,
+} from '../types'
 import { formatLocation } from '../utils'
 import { CurrentWeatherHero } from '../components/CurrentWeatherHero'
 import { DailyForecast } from '../components/DailyForecast'
@@ -16,6 +20,7 @@ interface ForecastPageProps {
   onToggleFavorite: () => void
   requestedLocation: Location
   status: 'error' | 'loading' | 'success'
+  temperatureUnit: TemperatureUnit
 }
 
 export function ForecastPage({
@@ -26,6 +31,7 @@ export function ForecastPage({
   onToggleFavorite,
   requestedLocation,
   status,
+  temperatureUnit,
 }: ForecastPageProps) {
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false)
   const currentHour = forecast.current.time.slice(0, 13)
@@ -90,17 +96,20 @@ export function ForecastPage({
           isFavorite={isFavorite}
           location={location}
           onToggleFavorite={onToggleFavorite}
+          temperatureUnit={temperatureUnit}
         />
 
         <div className="forecast-columns">
           <HourlyForecast
             forecasts={visibleHourlyForecasts}
             key={`hourly-${location.id}`}
+            temperatureUnit={temperatureUnit}
           />
           <DailyForecast
             currentDate={currentDate}
             forecasts={forecast.daily}
             key={`daily-${location.id}`}
+            temperatureUnit={temperatureUnit}
           />
         </div>
       </section>

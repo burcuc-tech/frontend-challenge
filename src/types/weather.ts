@@ -45,3 +45,5 @@ export interface FavoriteWeather {
   weatherCode: number
 }
 import type { Location } from './location'
+
+export type TemperatureUnit = 'celsius' | 'fahrenheit'

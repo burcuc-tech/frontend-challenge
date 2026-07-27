@@ -1,4 +1,5 @@
 export {
+  convertTemperature,
   formatDate,
   formatLocation,
   formatTemperature,
