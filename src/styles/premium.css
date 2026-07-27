@@ -1,0 +1,235 @@
+.sidebar {
+  background: linear-gradient(180deg, rgb(14 48 82 / 94%), rgb(5 28 52 / 97%));
+}
+
+.nav-item {
+  position: relative;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  transition:
+    color 180ms ease,
+    background 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.nav-item:hover {
+  transform: translateX(2px);
+}
+
+.nav-item--active {
+  border-color: rgb(105 164 255 / 28%);
+  background: linear-gradient(105deg, rgb(37 99 235 / 95%), rgb(22 83 182 / 78%));
+  box-shadow:
+    0 8px 22px rgb(18 81 190 / 24%),
+    inset 0 1px rgb(255 255 255 / 16%);
+}
+
+.nav-item--active::before {
+  position: absolute;
+  top: 25%;
+  bottom: 25%;
+  left: -0.3rem;
+  width: 2px;
+  border-radius: 999px;
+  background: #6da8ff;
+  box-shadow: 0 0 10px #4388f3;
+  content: '';
+}
+
+.unit-switch {
+  background: rgb(2 20 39 / 40%);
+  box-shadow: inset 0 1px 4px rgb(0 0 0 / 18%);
+}
+
+.unit-switch .unit-switch__active {
+  background: linear-gradient(135deg, #2f7bea, #1d5fc9);
+  box-shadow: inset 0 1px rgb(255 255 255 / 18%);
+}
+
+.profile {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.current-weather__temperature,
+.metric-card strong,
+.hourly-item strong,
+.daily-row strong {
+  font-variant-numeric: tabular-nums;
+}
+
+.current-weather__temperature {
+  text-shadow: 0 8px 30px rgb(0 9 23 / 24%);
+}
+
+.now-card,
+.panel,
+.metric-card {
+  box-shadow:
+    var(--shadow-card),
+    inset 0 1px var(--glass-highlight);
+  backdrop-filter: blur(16px) saturate(125%);
+}
+
+.now-card {
+  background: linear-gradient(145deg, rgb(162 198 232 / 25%), rgb(47 91 137 / 18%));
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease;
+}
+
+.now-card:hover {
+  border-color: rgb(176 215 250 / 34%);
+  transform: translateY(-2px);
+}
+
+.now-card .weather-svg {
+  filter: drop-shadow(0 0.2rem 0.35rem rgb(0 0 0 / 24%));
+}
+
+.panel {
+  background: linear-gradient(145deg, rgb(10 46 80 / 88%), rgb(3 27 51 / 84%));
+  transition: border-color 180ms ease;
+}
+
+.panel:hover {
+  border-color: rgb(160 205 246 / 28%);
+}
+
+.metric-card {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(145deg, rgb(23 63 100 / 72%), rgb(4 31 58 / 62%));
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.metric-card:hover {
+  border-color: rgb(169 210 247 / 30%);
+  background: linear-gradient(145deg, rgb(31 76 118 / 78%), rgb(6 37 68 / 68%));
+  transform: translateY(-2px);
+}
+
+.metric-card__visual {
+  position: absolute;
+  right: var(--space-3);
+  bottom: 0.45rem;
+  left: var(--space-3);
+  height: 0.18rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 10%);
+}
+
+.metric-card__visual > span {
+  display: block;
+  width: 58%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #46a6f7, #50dfc2);
+  box-shadow: 0 0 8px rgb(70 166 247 / 45%);
+}
+
+.metric-card--uv .metric-card__visual > span {
+  width: 35%;
+  background: linear-gradient(90deg, #45d29e, #ffd34e);
+}
+
+.metric-card--visibility .metric-card__visual > span {
+  width: 72%;
+}
+
+.metric-card--sunrise .metric-card__visual > span {
+  width: 42%;
+  background: linear-gradient(90deg, #f6a941, #ffe078);
+}
+
+.metric-card--sunset .metric-card__visual > span {
+  width: 84%;
+  background: linear-gradient(90deg, #ffd05a, #f28b64);
+}
+
+.text-button,
+.hourly-item,
+.daily-row,
+.pagination button,
+.favorite-row {
+  transition:
+    color 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.text-button:hover {
+  color: white;
+}
+
+.hourly-item {
+  border-radius: var(--radius-sm);
+}
+
+.hourly-item:hover {
+  background: rgb(255 255 255 / 6%);
+  transform: translateY(-2px);
+}
+
+.hourly-item--active {
+  background: linear-gradient(180deg, rgb(37 99 235 / 22%), rgb(37 99 235 / 5%));
+  box-shadow: inset 0 0 0 1px rgb(87 151 247 / 18%);
+}
+
+.daily-row {
+  border-radius: var(--radius-sm);
+}
+
+.daily-row:hover,
+.favorite-row:hover {
+  background: rgb(255 255 255 / 5%);
+  transform: translateX(2px);
+}
+
+.daily-row--active {
+  background: linear-gradient(90deg, rgb(37 99 235 / 11%), transparent);
+}
+
+.temperature-range {
+  box-shadow: 0 0 8px rgb(41 153 235 / 20%);
+}
+
+.pagination button:not(:disabled):hover {
+  border-color: rgb(100 164 255 / 45%);
+  background: rgb(255 255 255 / 7%);
+  transform: translateY(-1px);
+}
+
+.pagination .pagination__active {
+  box-shadow: 0 5px 16px rgb(37 99 235 / 28%);
+}
+
+.favorites-card {
+  background: linear-gradient(145deg, rgb(12 48 82 / 94%), rgb(4 29 54 / 92%));
+  backdrop-filter: blur(18px);
+}
+
+@media (max-width: 760px) {
+  .metric-card__visual {
+    right: 0.35rem;
+    bottom: 0.28rem;
+    left: 0.35rem;
+  }
+
+  .hourly-item:hover,
+  .daily-row:hover,
+  .favorite-row:hover {
+    transform: none;
+  }
+
+  .favorites-card {
+    background: transparent;
+    backdrop-filter: none;
+  }
+}

@@ -1,4 +1,6 @@
 import { Icon, type IconName } from './Icon'
+import { WeatherIcon } from './WeatherIcon'
+import mariaAvatar from '../assets/maria-avatar.webp'
 
 export type ViewName = 'forecast' | 'favorites'
 
@@ -26,7 +28,7 @@ export function Navigation({ activeView, onViewChange }: NavigationProps) {
     <>
       <aside className="sidebar">
         <a className="brand" href="/" aria-label="Weather home">
-          <span className="brand__mark">🌤️</span>
+          <WeatherIcon className="brand__mark" code={2} />
           <span>Weather</span>
         </a>
 
@@ -54,7 +56,7 @@ export function Navigation({ activeView, onViewChange }: NavigationProps) {
             <button type="button">°F</button>
           </div>
           <div className="profile">
-            <span className="profile__avatar">MG</span>
+            <img className="profile__avatar" src={mariaAvatar} alt="" />
             <span><strong>Maria Garcia</strong><small>Premium</small></span>
           </div>
         </div>

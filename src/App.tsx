@@ -3,6 +3,7 @@ import { Navigation, type ViewName } from './components/Navigation'
 import { FavoritesPage } from './pages/FavoritesPage'
 import { ForecastPage } from './pages/ForecastPage'
 import './App.css'
+import './styles/premium.css'
 
 function App() {
   const [activeView, setActiveView] = useState<ViewName>('forecast')

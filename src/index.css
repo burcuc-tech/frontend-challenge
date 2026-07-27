@@ -20,6 +20,8 @@
   --color-accent: #ffc928;
   --color-danger: #ff6b72;
   --shadow-panel: 0 24px 70px rgb(0 6 17 / 38%);
+  --shadow-card: 0 14px 36px rgb(0 9 24 / 24%);
+  --glass-highlight: rgb(255 255 255 / 12%);
 
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
@@ -56,7 +58,8 @@ body {
   margin: 0;
   color: var(--color-text);
   background:
-    radial-gradient(circle at 80% 0%, rgb(25 91 153 / 32%), transparent 34rem),
+    radial-gradient(circle at 82% -10%, rgb(37 99 235 / 28%), transparent 38rem),
+    radial-gradient(circle at 10% 100%, rgb(11 95 128 / 18%), transparent 32rem),
     var(--color-background);
 }
 

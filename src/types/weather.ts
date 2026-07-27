@@ -30,5 +30,4 @@ export interface WeatherForecast {
 
 export interface WeatherCondition {
   label: string
-  icon: string
 }
