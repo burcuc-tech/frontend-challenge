@@ -1,126 +1,185 @@
-# 🚀 Sprint Review
+# Sprint Review — Weather Forecast MVP
 
-First of all, congratulations on completing the challenge! 🎉
+## Project Summary
 
-Before our meeting, please take a few minutes to answer the following questions.
+I built a responsive weather dashboard with React and TypeScript. Users can search for cities worldwide, select a result, and view live current, hourly, and daily weather data.
 
-This isn't a test — we'll simply use it as a guide during the Sprint Review.
+The application also supports:
 
----
+- A paginated 30-day weather timeline
+- Favorite city management
+- Favorite persistence between sessions
+- Live weather summaries for saved cities
+- Persistent Celsius and Fahrenheit selection
+- Loading, error, empty, and unavailable states
+- Desktop and mobile layouts
 
-# Project Summary
+Weather and geocoding data come from Open-Meteo.
 
-Briefly describe your solution.
+## Project Architecture
 
-What did you build?
+I organized the project by technical responsibility:
 
----
+- `api` contains the Open-Meteo client and external API response types.
+- `services` builds API queries and maps external responses to application models.
+- `hooks` manages asynchronous behavior, cancellation, persistence, and feature state.
+- `components` contains reusable interface elements.
+- `pages` composes components into the Forecast and Favorites views.
+- `types`, `constants`, and `utils` contain shared domain models, mappings, and formatters.
 
-# Project Architecture
+I chose this structure to keep API details out of the UI. Components consume application models rather than raw Open-Meteo responses, so changes to the external response format can be handled in one mapping layer.
 
-Describe how you organized the project.
+The structure also keeps each hook focused on a single concern. Search, forecast loading, favorites, favorite summaries, and temperature preferences can evolve independently without introducing a global state dependency.
 
-Why did you choose this structure?
+## Technical Decisions
 
----
+### State management
 
-# Technical Decisions
+I used React state and focused custom hooks instead of adding an external state-management library. The application state is relatively small, and most of it belongs to a specific feature.
 
-Tell us about some of the most important decisions you made.
+Favorites and the selected temperature unit are stored in `localStorage`. Only stable user choices are persisted; weather results are fetched again so cached forecasts do not become stale.
 
-Examples:
+The persistence hooks validate stored values and continue working in memory if browser storage is unavailable.
 
-- Folder structure
-- State management
-- Styling solution
-- Data fetching
-- Routing
-- Component architecture
+### Data fetching
 
----
+I selected Open-Meteo because it offers worldwide geocoding and weather data without an API key.
 
-# AI Usage
+Requests are created with `URLSearchParams`, and `AbortController` is used to cancel obsolete searches and forecast requests. City search is debounced to avoid sending a request for every keystroke.
 
-We encourage AI-assisted development.
+The Favorites page uses a dedicated summary request. It fetches only the fields needed by each favorite card instead of downloading the full hourly and daily forecast for every saved location.
 
-Tell us a little about how you used it during the challenge.
+Favorite summary requests use `Promise.allSettled`, allowing one failed city request to show as unavailable without failing the complete Favorites page.
+
+### Domain mapping
+
+Raw Open-Meteo response types are kept separate from the application's `Location`, `WeatherForecast`, and `FavoriteWeather` models.
+
+The service layer converts API field names and nested arrays into UI-friendly objects. This prevents presentation components from depending directly on the external API contract.
+
+### Component architecture
+
+Repeated interface patterns are represented by focused components such as `Panel`, `MetricCard`, `WeatherIcon`, and `Icon`. Larger forecast sections are separated into current, hourly, and daily components.
+
+WMO weather codes are mapped centrally so the hero, forecast rows, and Favorites page always use the same label and icon for a condition.
+
+### Styling and responsive behavior
+
+I used controlled CSS with shared theme variables and responsive rules. Tailwind support remains available in the project, but custom CSS made the supplied dashboard layout and its mobile adaptations easier to control precisely.
+
+The mobile version is not only a scaled-down desktop view. Navigation moves to the bottom, content groups are reorganized, hourly items become horizontally scrollable, and favorites use a card layout.
+
+### Routing
+
+The MVP has two application views, Forecast and Favorites. I kept view switching in local application state rather than adding a routing dependency because URL-based navigation was not required by the challenge.
+
+### Testing
+
+I added Vitest tests for:
+
+- Temperature conversion and weather formatting
+- Wind direction and UV boundary behavior
+- WMO code mapping and unknown-code fallback
+- Geocoding query creation and response mapping
+- Forecast and favorite-summary query parameters
+- Forecast response mapping
+- API and non-JSON HTTP error handling
+
+Service tests mock `fetch`, making them deterministic and independent of network availability.
+
+## AI Usage
 
 ### Which AI tools did you use?
 
-Examples:
-
-- ChatGPT
-- Cursor
-- Claude
-- GitHub Copilot
-
----
+I used OpenAI Codex as a development assistant.
 
 ### How did these tools help you?
 
----
+Codex helped me:
 
-### Was there any suggestion generated by AI that you decided **not** to use?
+- Break the challenge into incremental implementation stages
+- Compare the code against the acceptance criteria
+- Iterate on responsive layout and component boundaries
+- Identify edge cases in local storage, request cancellation, pagination, and API errors
+- Generate candidate tests and review their boundary coverage
+- Keep a development log of technical decisions and validation results
+- Draft project documentation based on the completed implementation
 
-If so, why?
+I reviewed the generated suggestions against the existing code and validated changes with ESLint, TypeScript, production builds, automated tests, and targeted runtime checks.
 
----
+### Was there any suggestion generated by AI that you decided not to use?
 
-# Challenges
+Yes. Some possible solutions would have added a global state library or a routing library. I did not use them because the MVP has limited shared state and only two internal views. Focused React hooks and local view state kept the implementation smaller and easier to explain.
 
-What was the most difficult part of the challenge?
+I also avoided fabricating 30 future forecast days or repeating existing days when the API could not provide that range. The application exposes the limitation through an honest chronological timeline and unavailable states instead.
 
-How did you solve it?
+## Challenges
 
----
+### What was the most difficult part of the challenge?
 
-# Trade-offs
+The most difficult part was reconciling the required 30-day forecast with the data available from the selected weather API.
 
-If you had to simplify or postpone something, what was it?
+Open-Meteo's standard forecast response does not provide 30 future days in one request. The application therefore requests 14 past days and 16 forecast days and presents them as a chronological 30-day timeline.
 
-Why did you make that decision?
+Pagination starts on the page containing today. I preserved chronological ordering rather than rearranging the dates, because moving today to the first row would create a confusing jump from future dates back to past dates.
 
----
+When data is missing, the UI displays an unavailable state instead of duplicating values to fill the page.
 
-# Improvements
+Other important challenges included:
 
-Imagine you had another sprint.
+- Matching the supplied desktop design while creating a usable mobile layout
+- Preventing stale requests from replacing newer city selections
+- Keeping favorite weather requests independent from one another
+- Handling invalid or inaccessible browser storage safely
+- Keeping temperatures consistent across every view when switching units
 
-What would you improve?
+## Trade-offs
 
-Examples:
+The 30-day timeline combines historical and forecast data because of the API horizon. It satisfies the browsing and pagination interaction, but it is not a full 30-day future prediction.
 
-- New features
-- Better architecture
-- Performance
-- Testing
-- Accessibility
-- Animations
+I used state-based view switching rather than URL routing. This is sufficient for the MVP but does not provide deep links or browser history between Forecast and Favorites.
 
----
+World Map, Alerts, Settings, account actions, and Premium actions remain visual placeholders. They were present in the design but were outside the required user stories, so I prioritized the core search, forecast, favorites, and pagination flows.
 
-# Self Assessment
+I focused automated tests on domain logic and the API service boundary. Full component and end-to-end browser coverage would be valuable, but it was postponed in favor of completing and validating the core MVP.
 
-Looking back at your implementation...
+## Improvements
+
+With another sprint, I would:
+
+- Add component tests for search interactions, loading states, and favorite actions
+- Add end-to-end tests for the main user journeys
+- Introduce URL routing and shareable city URLs
+- Add a more complete loading skeleton and an application-level error boundary
+- Improve focus management and announce asynchronous results to screen readers
+- Expand reduced-motion support
+- Split the main stylesheet further by feature
+- Add responsive image variants with `srcset`
+- Add caching with expiration for recently requested forecasts
+- Implement the World Map, Alerts, and Settings experiences
+- Use a weather provider capable of delivering a genuine 30-day future forecast
+
+## Self Assessment
 
 ### What part are you most proud of?
 
----
+I am most proud of the separation between the external API contract and the application domain. The UI is not coupled to Open-Meteo field names, and the same mapped forecast data can be used consistently across desktop, mobile, hourly, daily, and favorite views.
+
+I am also pleased that the responsive version was treated as a real mobile experience rather than a compressed desktop layout.
 
 ### What part would you refactor?
 
----
+I would split the main CSS file into smaller feature-level style modules. The existing CSS is organized into sections, but it has grown large as desktop, mobile, state, and accessibility behavior were added.
+
+I would also consider consolidating asynchronous state handling into a small shared request utility if more API-backed features were introduced.
 
 ### If you had to start again, what would you do differently?
 
----
+I would investigate the forecast provider's maximum future horizon before finalizing the daily forecast interaction. That would allow the product and API decision to be made earlier.
 
-# Questions
+I would also add the test runner near the beginning of development and write formatter and service tests alongside each feature rather than adding the first automated suite near the end.
 
-Do you have any questions for us?
+## Questions
 
-We're happy to answer anything related to the challenge, the team or the company.
-
----
-
-See you during the Sprint Review! 🚀
+- What would a typical day look like for an intern on the team?
+- How do interns usually receive feedback and mentorship?
