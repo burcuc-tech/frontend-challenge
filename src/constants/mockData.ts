@@ -4,6 +4,7 @@ import type {
   FavoriteLocation,
   HourlyForecast,
   Location,
+  WeatherForecast,
 } from '../types'
 
 export const DEFAULT_LOCATION: Location = {
@@ -113,6 +114,13 @@ export const MOCK_DAILY: DailyForecast[] = [
     weatherCode: 2,
   },
 ]
+
+export const MOCK_FORECAST: WeatherForecast = {
+  current: MOCK_CURRENT,
+  hourly: MOCK_HOURLY,
+  daily: MOCK_DAILY,
+  timezone: DEFAULT_LOCATION.timezone ?? 'Europe/Oslo',
+}
 
 export interface FavoriteWeather {
   location: FavoriteLocation

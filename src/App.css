@@ -178,6 +178,61 @@ button {
   color: #d2e1f0;
 }
 
+.search {
+  position: relative;
+}
+
+.search-results {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  left: 0;
+  z-index: 10;
+  overflow: hidden;
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: rgb(5 30 55 / 97%);
+  box-shadow: var(--shadow-panel);
+  backdrop-filter: blur(18px);
+}
+
+.search-result {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  text-align: left;
+}
+
+.search-result:hover,
+.search-result--active {
+  background: rgb(56 125 222 / 18%);
+}
+
+.search-result span {
+  font-weight: 650;
+}
+
+.search-result small,
+.search-results__status {
+  color: var(--color-text-muted);
+}
+
+.search-results__status {
+  margin: 0;
+  padding: var(--space-3);
+  font-size: var(--font-size-sm);
+}
+
+.search-results__status--error {
+  color: #ffadb1;
+}
+
 .toolbar-actions {
   display: flex;
   gap: var(--space-2);
@@ -197,6 +252,7 @@ button {
 }
 
 .weather-hero {
+  position: relative;
   display: grid;
   height: calc(100dvh - var(--space-10));
   min-height: 0;
@@ -208,6 +264,26 @@ button {
     linear-gradient(90deg, rgb(3 26 49 / 58%), rgb(3 24 45 / 75%)),
     url('./assets/weather-hero-v3.webp') center / cover;
   box-shadow: var(--shadow-panel);
+}
+
+.forecast-status {
+  position: absolute;
+  top: var(--space-4);
+  left: 50%;
+  z-index: 8;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: rgb(4 31 58 / 90%);
+  box-shadow: var(--shadow-card);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  transform: translateX(-50%);
+}
+
+.forecast-status--error {
+  border-color: rgb(255 107 114 / 32%);
+  color: #ffb8bc;
 }
 
 .weather-hero__content {
@@ -511,7 +587,8 @@ button {
 }
 
 .mobile-header,
-.mobile-nav {
+.mobile-nav,
+.mobile-search {
   display: none;
 }
 
@@ -760,9 +837,13 @@ button {
 
   .mobile-location {
     display: inline-flex;
+    width: auto;
     align-items: center;
     justify-content: center;
     gap: 0.2rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .mobile-header button {
@@ -771,6 +852,37 @@ button {
     width: 2.5rem;
     height: 2.5rem;
     background: transparent;
+  }
+
+  .mobile-header .mobile-location {
+    width: auto;
+    padding: 0 var(--space-2);
+    font-size: 0.82rem;
+  }
+
+  .mobile-search {
+    position: relative;
+    z-index: 9;
+    display: block;
+    padding: 0 var(--space-4) var(--space-2);
+  }
+
+  .mobile-search .search-bar {
+    width: 100%;
+    background: rgb(8 42 75 / 94%);
+  }
+
+  .mobile-search .search-results {
+    right: var(--space-4);
+    left: var(--space-4);
+  }
+
+  .forecast-status {
+    top: var(--space-2);
+    max-width: calc(100% - var(--space-8));
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .weather-hero {

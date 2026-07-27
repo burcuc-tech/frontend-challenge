@@ -1,9 +1,5 @@
-import {
-  DEFAULT_LOCATION,
-  getWeatherCondition,
-  MOCK_CURRENT,
-  MOCK_DAILY,
-} from '../constants'
+import { getWeatherCondition } from '../constants'
+import type { Location, WeatherForecast } from '../types'
 import {
   formatDate,
   formatLocation,
@@ -16,19 +12,29 @@ import { Icon } from './Icon'
 import { MetricCard } from './MetricCard'
 import { WeatherIcon } from './WeatherIcon'
 
-export function CurrentWeatherHero() {
-  const condition = getWeatherCondition(MOCK_CURRENT.weatherCode)
-  const currentDay = MOCK_DAILY[0]
+interface CurrentWeatherHeroProps {
+  forecast: WeatherForecast
+  location: Location
+}
+
+export function CurrentWeatherHero({
+  forecast,
+  location,
+}: CurrentWeatherHeroProps) {
+  const { current, daily } = forecast
+  const condition = getWeatherCondition(current.weatherCode)
+  const currentDate = current.time.slice(0, 10)
+  const currentDay = daily.find((day) => day.date === currentDate) ?? daily[0]
 
   return (
     <div className="weather-hero__content">
       <div className="location-heading">
         <div>
           <h1 id="location-heading">
-            {formatLocation(DEFAULT_LOCATION.name, DEFAULT_LOCATION.country)}
+            {formatLocation(location.name, location.country)}
           </h1>
           <p>
-            {formatDate(MOCK_CURRENT.time, {
+            {formatDate(current.time, {
               weekday: 'long',
               month: 'long',
               day: 'numeric',
@@ -38,7 +44,7 @@ export function CurrentWeatherHero() {
           </p>
         </div>
         <button
-          aria-label="Add Oslo to favorites"
+          aria-label={`Add ${location.name} to favorites`}
           className="favorite-button"
           type="button"
         >
@@ -48,33 +54,33 @@ export function CurrentWeatherHero() {
 
       <div className="current-weather">
         <span className="current-weather__temperature">
-          {formatTemperature(MOCK_CURRENT.temperature)}
+          {formatTemperature(current.temperature)}
         </span>
         <span className="current-weather__unit">C</span>
       </div>
       <h2>{condition.label}</h2>
-      <p>Feels like {formatTemperature(MOCK_CURRENT.apparentTemperature)}C</p>
+      <p>Feels like {formatTemperature(current.apparentTemperature)}C</p>
 
       <article className="now-card">
         <span>NOW</span>
-        <WeatherIcon code={MOCK_CURRENT.weatherCode} />
-        <strong>{formatTemperature(MOCK_CURRENT.temperature)}</strong>
+        <WeatherIcon code={current.weatherCode} />
+        <strong>{formatTemperature(current.temperature)}</strong>
       </article>
 
       <div className="weather-metrics">
         <div>
           <Icon name="wind" />
-          <strong>{MOCK_CURRENT.windSpeed} km/h</strong>
-          <span>{formatWindDirection(MOCK_CURRENT.windDirection)}</span>
+          <strong>{Math.round(current.windSpeed)} km/h</strong>
+          <span>{formatWindDirection(current.windDirection)}</span>
         </div>
         <div>
           <Icon name="humidity" />
-          <strong>{MOCK_CURRENT.humidity}%</strong>
+          <strong>{Math.round(current.humidity)}%</strong>
           <span>Humidity</span>
         </div>
         <div>
           <Icon name="pressure" />
-          <strong>{MOCK_CURRENT.pressure} hPa</strong>
+          <strong>{Math.round(current.pressure)} hPa</strong>
           <span>Pressure</span>
         </div>
       </div>
@@ -91,7 +97,7 @@ export function CurrentWeatherHero() {
           icon="visibility"
           kind="visibility"
           label="Visibility"
-          value={formatVisibility(MOCK_CURRENT.visibility)}
+          value={formatVisibility(current.visibility)}
         />
         <MetricCard
           icon="sunrise"

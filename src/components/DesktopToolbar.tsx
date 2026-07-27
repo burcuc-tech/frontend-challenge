@@ -1,10 +1,15 @@
+import type { Location } from '../types'
 import { Icon } from './Icon'
 import { SearchBar } from './SearchBar'
 
-export function DesktopToolbar() {
+interface DesktopToolbarProps {
+  onLocationSelect: (location: Location) => void
+}
+
+export function DesktopToolbar({ onLocationSelect }: DesktopToolbarProps) {
   return (
     <header className="desktop-toolbar">
-      <SearchBar />
+      <SearchBar onLocationSelect={onLocationSelect} />
       <div className="toolbar-actions">
         <button aria-label="Display settings" type="button">
           <Icon name="sun" />

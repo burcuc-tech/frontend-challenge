@@ -1,16 +1,30 @@
-import { MOCK_DAILY } from '../constants'
+import type { DailyForecast as DailyForecastData } from '../types'
 import { formatDate, formatTemperature } from '../utils'
 import { Panel } from './Panel'
 import { WeatherIcon } from './WeatherIcon'
 import { Icon } from './Icon'
 
-export function DailyForecast() {
+interface DailyForecastProps {
+  currentDate: string
+  forecasts: DailyForecastData[]
+}
+
+export function DailyForecast({ currentDate, forecasts }: DailyForecastProps) {
+  const currentDayIndex = forecasts.findIndex(
+    (forecast) => forecast.date === currentDate,
+  )
+  const firstVisibleIndex = Math.max(currentDayIndex, 0)
+  const visibleForecasts = forecasts.slice(
+    firstVisibleIndex,
+    firstVisibleIndex + 8,
+  )
+
   return (
     <Panel title="30-day forecast" action={<button className="text-button" type="button">View more</button>}>
       <div className="daily-list">
-        {MOCK_DAILY.map((forecast, index) => {
+        {visibleForecasts.map((forecast) => {
           return (
-            <article className={`daily-row${index === 0 ? ' daily-row--active' : ''}`} key={forecast.date}>
+            <article className={`daily-row${forecast.date === currentDate ? ' daily-row--active' : ''}`} key={forecast.date}>
               <time dateTime={forecast.date}>
                 {formatDate(`${forecast.date}T12:00`, { weekday: 'short', month: 'short', day: 'numeric' })}
               </time>
