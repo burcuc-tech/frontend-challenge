@@ -16,6 +16,9 @@ export function SearchBar({ onLocationSelect }: SearchBarProps) {
   const listboxId = useId()
   const hasQuery = query.trim().length >= 2
   const isOpen = isFocused && hasQuery
+  const activeOptionId = isOpen && results[activeIndex]
+    ? `${listboxId}-option-${results[activeIndex].id}-${activeIndex}`
+    : undefined
 
   function selectLocation(location: Location) {
     onLocationSelect(location)
@@ -65,6 +68,7 @@ export function SearchBar({ onLocationSelect }: SearchBarProps) {
       <label className="search-bar">
         <Icon name="search" size={18} />
         <input
+          aria-activedescendant={activeOptionId}
           aria-autocomplete="list"
           aria-controls={listboxId}
           aria-expanded={isOpen}
@@ -97,6 +101,7 @@ export function SearchBar({ onLocationSelect }: SearchBarProps) {
             <button
               aria-selected={index === activeIndex}
               className={`search-result${index === activeIndex ? ' search-result--active' : ''}`}
+              id={`${listboxId}-option-${location.id}-${index}`}
               key={location.id}
               onMouseEnter={() => setActiveIndex(index)}
               onClick={() => selectLocation(location)}

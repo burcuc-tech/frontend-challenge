@@ -35,7 +35,13 @@ describe('SearchBar', () => {
 
     const input = screen.getByRole('combobox')
     await user.type(input, 'Barcelona')
-    await user.keyboard('{ArrowDown}{Enter}')
+    await user.keyboard('{ArrowDown}')
+
+    const activeOption = screen.getByRole('option', { name: /Barcelona/ })
+    expect(input).toHaveAttribute('aria-activedescendant', activeOption.id)
+    expect(activeOption).toHaveAttribute('aria-selected', 'true')
+
+    await user.keyboard('{Enter}')
 
     expect(onLocationSelect).toHaveBeenCalledWith(BARCELONA)
     expect(input).toHaveValue('')
