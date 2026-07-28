@@ -132,6 +132,8 @@ Network-dependent service tests use controlled `fetch` mocks, keeping the suite 
 
 Open-Meteo's standard forecast horizon does not provide 30 future days in one request. To preserve the challenge's 30-day browsing requirement, the application requests 14 past days and 16 forecast days and displays them as one chronological timeline.
 
+Past days are visually muted and marked with a `Past` label, while today and forecast days retain the standard styling.
+
 This is an explicit product trade-off: the interface provides 30 daily entries, but the complete range is not a 30-day future prediction. Missing values are shown as unavailable rather than duplicating data.
 
 ## MVP Scope

@@ -192,6 +192,10 @@
   transform: translateX(2px);
 }
 
+.daily-row--past:hover {
+  opacity: 0.78;
+}
+
 .daily-row--active {
   background: linear-gradient(90deg, rgb(37 99 235 / 11%), transparent);
 }

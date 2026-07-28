@@ -23,6 +23,30 @@ function createForecasts(count: number): DailyForecastData[] {
 }
 
 describe('DailyForecast', () => {
+  it('labels past days without labeling current or future forecast days', () => {
+    render(
+      <DailyForecast
+        currentDate="2026-01-03"
+        forecasts={createForecasts(5)}
+        temperatureUnit="celsius"
+      />,
+    )
+
+    expect(screen.getAllByText('Past')).toHaveLength(2)
+    expect(screen.queryByText('Forecast')).not.toBeInTheDocument()
+
+    const pastRow = document
+      .querySelector('time[datetime="2026-01-02"]')
+      ?.closest('article')
+    const currentRow = document
+      .querySelector('time[datetime="2026-01-03"]')
+      ?.closest('article')
+
+    expect(pastRow).toHaveClass('daily-row--past')
+    expect(currentRow).toHaveClass('daily-row--active')
+    expect(currentRow).not.toHaveClass('daily-row--past')
+  })
+
   it('navigates pages and enforces previous and next boundaries', async () => {
     const user = userEvent.setup()
 

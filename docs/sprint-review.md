@@ -97,7 +97,7 @@ I added Vitest tests for:
 - Temperature-unit controls
 - Daily pagination boundaries
 
-The current suite has 44 tests across 8 test files, all passing. Service tests mock `fetch`, making them deterministic and independent of network availability. Component tests use React Testing Library and jsdom to cover real user interactions such as keyboard navigation and retry actions instead of testing only implementation details.
+The current suite has 45 tests across 8 test files, all passing. Service tests mock `fetch`, making them deterministic and independent of network availability. Component tests use React Testing Library and jsdom to cover real user interactions such as keyboard navigation and retry actions instead of testing only implementation details.
 
 Automated coverage focuses on domain logic, the API service boundary, and the most important component interactions. Full end-to-end browser coverage was not added in this MVP.
 
@@ -142,6 +142,8 @@ I also avoided fabricating 30 future forecast days or repeating existing days wh
 The most difficult part was reconciling the required 30-day forecast with the data available from the selected weather API.
 
 Open-Meteo's standard forecast response does not provide 30 future days in one request. The application therefore requests 14 past days and 16 forecast days and presents them as a chronological 30-day timeline.
+
+Past days are visually distinguished with muted styling and a `Past` label, while today and forecast days retain the standard styling, making the data boundary visible in the UI itself.
 
 Pagination starts on the page containing today. I preserved chronological ordering rather than rearranging the dates, because moving today to the first row would create a confusing jump from future dates back to past dates.
 

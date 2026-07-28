@@ -55,11 +55,26 @@ export function DailyForecast({
     >
       <div className={`daily-list${isExpanded ? ' daily-list--expanded' : ''}`}>
         {visibleForecasts.map((forecast) => {
+          const isPast = forecast.date < currentDate
+          const isCurrentDay = forecast.date === currentDate
+
           return (
-            <article className={`daily-row${forecast.date === currentDate ? ' daily-row--active' : ''}`} key={forecast.date}>
-              <time dateTime={forecast.date}>
-                {formatDate(`${forecast.date}T12:00`, { weekday: 'short', month: 'short', day: 'numeric' })}
-              </time>
+            <article
+              className={`daily-row${isPast ? ' daily-row--past' : ''}${isCurrentDay ? ' daily-row--active' : ''}`}
+              key={forecast.date}
+            >
+              <div className="daily-row__date">
+                <time dateTime={forecast.date}>
+                  {formatDate(`${forecast.date}T12:00`, {
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric',
+                  })}
+                </time>
+                {isPast && (
+                  <span className="daily-row__label">Past</span>
+                )}
+              </div>
               <WeatherIcon code={forecast.weatherCode} />
               <span>
                 {formatTemperature(
