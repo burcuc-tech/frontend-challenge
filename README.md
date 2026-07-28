@@ -2,6 +2,50 @@
 
 A responsive weather dashboard built for Sprint #24 with React and TypeScript. Users can search for cities worldwide, inspect current and hourly conditions, browse a paginated 30-day weather timeline, and save favorite cities between sessions.
 
+## Screenshots
+
+### Forecast
+
+#### Desktop
+
+![Weather dashboard desktop view](docs/screenshots/weather-dashboard-desktop.png)
+
+#### Mobile overview
+
+<p align="center">
+  <img
+    src="docs/screenshots/weather-dashboard-mobile-overview.png"
+    alt="Weather dashboard mobile overview"
+    width="390"
+  />
+</p>
+
+#### Mobile forecast details
+
+<p align="center">
+  <img
+    src="docs/screenshots/weather-dashboard-mobile.png"
+    alt="Weather dashboard mobile forecast details"
+    width="390"
+  />
+</p>
+
+### Favorites
+
+#### Desktop
+
+![Favorite cities desktop view](docs/screenshots/weather-favorites-desktop.png)
+
+#### Mobile
+
+<p align="center">
+  <img
+    src="docs/screenshots/weather-favorites-mobile.png"
+    alt="Favorite cities mobile view"
+    width="390"
+  />
+</p>
+
 ## Features
 
 - Worldwide city search with debounced Open-Meteo geocoding suggestions
