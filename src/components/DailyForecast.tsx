@@ -70,7 +70,7 @@ export function DailyForecast({
               onClick={() => onDateSelect(forecast.date)}
               type="button"
             >
-              <div className="daily-row__date">
+              <span className="daily-row__date">
                 <time dateTime={forecast.date}>
                   {formatDate(`${forecast.date}T12:00`, {
                     weekday: 'short',
@@ -81,7 +81,7 @@ export function DailyForecast({
                 {isPast && (
                   <span className="daily-row__label">Past</span>
                 )}
-              </div>
+              </span>
               <WeatherIcon code={forecast.weatherCode} />
               <span>
                 {formatTemperature(
