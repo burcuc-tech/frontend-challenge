@@ -35,6 +35,9 @@ export function DailyForecast({
   const visibleForecasts = isExpanded
     ? forecasts
     : forecasts.slice(pageStart, pageStart + FORECASTS_PER_PAGE)
+  const spacerCount = !isExpanded && forecasts.length > 0
+    ? FORECASTS_PER_PAGE - visibleForecasts.length
+    : 0
   const pageNumbers = Array.from({ length: totalPages }, (_, index) => index)
 
   return (
@@ -89,6 +92,13 @@ export function DailyForecast({
             </article>
           )
         })}
+        {Array.from({ length: spacerCount }, (_, index) => (
+          <div
+            aria-hidden="true"
+            className="daily-row daily-row--spacer"
+            key={`spacer-${index}`}
+          />
+        ))}
         {visibleForecasts.length === 0 && (
           <p className="forecast-empty">No daily forecast available.</p>
         )}

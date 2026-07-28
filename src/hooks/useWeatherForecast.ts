@@ -4,6 +4,9 @@ import type { Location, WeatherForecast } from '../types'
 
 type ForecastStatus = 'error' | 'loading' | 'success'
 
+const FORECAST_REFRESH_INTERVAL_MS = 15 * 60_000
+const REFRESH_BOUNDARY_DELAY_MS = 5_000
+
 interface LoadedForecast {
   forecast: WeatherForecast
   location: Location
@@ -15,6 +18,32 @@ export function useWeatherForecast(location: Location) {
   )
   const [requestVersion, setRequestVersion] = useState(0)
   const [status, setStatus] = useState<ForecastStatus>('loading')
+
+  useEffect(() => {
+    let intervalId: number | undefined
+    const refreshForecast = () => {
+      setRequestVersion((version) => version + 1)
+    }
+    const millisecondsUntilNextBoundary =
+      FORECAST_REFRESH_INTERVAL_MS
+      - (Date.now() % FORECAST_REFRESH_INTERVAL_MS)
+      + REFRESH_BOUNDARY_DELAY_MS
+    const timeoutId = window.setTimeout(() => {
+      refreshForecast()
+      intervalId = window.setInterval(
+        refreshForecast,
+        FORECAST_REFRESH_INTERVAL_MS,
+      )
+    }, millisecondsUntilNextBoundary)
+
+    return () => {
+      window.clearTimeout(timeoutId)
+
+      if (intervalId !== undefined) {
+        window.clearInterval(intervalId)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     const controller = new AbortController()

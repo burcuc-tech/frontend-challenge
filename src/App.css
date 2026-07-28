@@ -617,6 +617,10 @@ button {
   opacity: 0.62;
 }
 
+.daily-row--spacer {
+  visibility: hidden;
+}
+
 .daily-row__date {
   display: flex;
   align-items: center;

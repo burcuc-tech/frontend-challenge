@@ -94,6 +94,8 @@ The application keeps external API response types separate from its internal dom
 
 Open-Meteo was selected because it provides both global geocoding and forecast data without requiring an API key. Requests are built with `URLSearchParams`, and in-flight search and forecast requests can be cancelled with `AbortController`.
 
+The location heading uses a client-side clock formatted in the selected city's timezone instead of treating the API observation timestamp as a live clock. Weather data refreshes shortly after each 15-minute boundary to match Open-Meteo's current-condition interval without making unnecessary requests.
+
 Favorite cards use a smaller dedicated request that fetches only current temperature, weather code, and daily minimum/maximum values. This avoids downloading the complete forecast for every saved city.
 
 ### State management

@@ -48,6 +48,8 @@ I selected Open-Meteo because it offers worldwide geocoding and weather data wit
 
 Requests are created with `URLSearchParams`. `AbortController` cancels old search and forecast requests when they are no longer needed. City search also waits briefly before sending a request, so it does not call the API after every keystroke.
 
+The location heading uses a client-side clock formatted in the selected city's timezone instead of treating the API observation timestamp as a live clock. Weather data refreshes shortly after each 15-minute boundary to match Open-Meteo's current-condition interval without making unnecessary requests.
+
 The Favorites page uses a smaller request. It fetches only the fields needed by each favorite card instead of downloading a full forecast for every saved city.
 
 Favorite requests use `Promise.allSettled`. If one city request fails, that city is shown as unavailable while the other cities can still load.

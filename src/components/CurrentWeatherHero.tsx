@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { getWeatherCondition } from '../constants'
 import type { Location, TemperatureUnit, WeatherForecast } from '../types'
 import {
@@ -12,6 +13,8 @@ import {
 import { Icon } from './Icon'
 import { MetricCard } from './MetricCard'
 import { WeatherIcon } from './WeatherIcon'
+
+const CLOCK_UPDATE_INTERVAL_MS = 1_000
 
 interface CurrentWeatherHeroProps {
   forecast: WeatherForecast
@@ -28,11 +31,20 @@ export function CurrentWeatherHero({
   onToggleFavorite,
   temperatureUnit,
 }: CurrentWeatherHeroProps) {
+  const [currentTime, setCurrentTime] = useState(() => new Date())
   const { current, daily } = forecast
   const condition = getWeatherCondition(current.weatherCode)
   const currentDate = current.time.slice(0, 10)
   const currentDay = daily.find((day) => day.date === currentDate) ?? daily[0]
   const uvIndex = currentDay?.uvIndex
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setCurrentTime(new Date())
+    }, CLOCK_UPDATE_INTERVAL_MS)
+
+    return () => window.clearInterval(intervalId)
+  }, [forecast.timezone])
 
   return (
     <div className="weather-hero__content">
@@ -54,12 +66,13 @@ export function CurrentWeatherHero({
             </button>
           </div>
           <p>
-            {formatDate(current.time, {
+            {formatDate(currentTime, {
               weekday: 'long',
               month: 'long',
               day: 'numeric',
               hour: 'numeric',
               minute: '2-digit',
+              timeZone: forecast.timezone,
             })}
           </p>
         </div>
