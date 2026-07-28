@@ -148,7 +148,7 @@ button {
   z-index: 2;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   width: auto;
   margin-top: var(--space-4);
 }
@@ -231,24 +231,6 @@ button {
 
 .search-results__status--error {
   color: #ffadb1;
-}
-
-.toolbar-actions {
-  display: flex;
-  gap: var(--space-2);
-}
-
-.toolbar-actions button {
-  display: grid;
-  width: 2.75rem;
-  height: 2.75rem;
-  place-items: center;
-  border-radius: var(--radius-sm);
-  background: rgb(4 31 58 / 30%);
-}
-
-.toolbar-actions button:hover {
-  background: rgb(255 255 255 / 10%);
 }
 
 .weather-hero {
@@ -988,6 +970,10 @@ button {
     min-height: 3.65rem;
     padding: 0.55rem 0.8rem 0.75rem;
     text-align: center;
+  }
+
+  .mobile-header::before {
+    content: '';
   }
 
   .mobile-header strong {

@@ -49,7 +49,6 @@ export function ForecastPage({
   return (
     <main className="forecast-page">
       <header className="mobile-header">
-        <button aria-label="Open menu" type="button"><Icon name="menu" /></button>
         <button
           aria-expanded={isMobileSearchOpen}
           className="mobile-location"

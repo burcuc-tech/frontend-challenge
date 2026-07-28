@@ -25,7 +25,6 @@ export function FavoritesPage({
   return (
     <main className="favorites-page">
       <header className="mobile-header">
-        <button aria-label="Open menu" type="button"><Icon name="menu" /></button>
         <strong>My favorites</strong>
         <button aria-label="Add favorite" onClick={onAddFavorite} type="button">
           <Icon name="plus" />
