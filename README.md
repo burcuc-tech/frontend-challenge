@@ -7,6 +7,7 @@ A responsive weather dashboard built for Sprint #24 with React and TypeScript. U
 - Worldwide city search with debounced Open-Meteo geocoding suggestions
 - Current weather details, including feels-like temperature, humidity, pressure, wind, visibility, UV index, sunrise, and sunset
 - Hourly forecast starting from the selected city's current hour
+- Hourly forecasts that update when a day is selected from the 30-day timeline
 - Paginated 30-day weather timeline with previous and next navigation
 - Favorite city management with duplicate prevention
 - Favorite persistence through `localStorage`

@@ -64,6 +64,8 @@ The service layer converts API field names and arrays into objects that are easi
 
 Repeated UI patterns use small components such as `Panel`, `MetricCard`, `WeatherIcon`, and `Icon`. The larger forecast sections are split into current, hourly, and daily components.
 
+Daily forecast rows are interactive. Selecting a past or future date updates the hourly panel with that calendar day's API data. When today is selected, the hourly panel starts from the current hour so the most relevant upcoming conditions appear first.
+
 WMO weather codes are mapped centrally so the hero, forecast rows, and Favorites page always use the same label and icon for a condition.
 
 ### Styling and responsive behavior
