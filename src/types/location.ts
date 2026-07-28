@@ -7,5 +7,3 @@ export interface Location {
   longitude: number
   timezone?: string
 }
-
-export type FavoriteLocation = Location

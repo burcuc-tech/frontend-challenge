@@ -35,14 +35,11 @@ export function DailyForecast({
   const visibleForecasts = isExpanded
     ? forecasts
     : forecasts.slice(pageStart, pageStart + FORECASTS_PER_PAGE)
-  const placeholderCount = !isExpanded && forecasts.length > 0
-    ? FORECASTS_PER_PAGE - visibleForecasts.length
-    : 0
   const pageNumbers = Array.from({ length: totalPages }, (_, index) => index)
 
   return (
     <Panel
-      title="30-day forecast"
+      title="30-day weather timeline"
       action={(
         <button
           className="text-button"
@@ -92,21 +89,6 @@ export function DailyForecast({
             </article>
           )
         })}
-        {Array.from({ length: placeholderCount }, (_, index) => (
-          <div
-            className="daily-row daily-row--placeholder"
-            key={`placeholder-${index}`}
-          >
-            <span>Forecast unavailable</span>
-            <span aria-hidden="true">—</span>
-            <span aria-hidden="true">—</span>
-            <span
-              aria-hidden="true"
-              className="temperature-range temperature-range--empty"
-            />
-            <span aria-hidden="true">—</span>
-          </div>
-        ))}
         {visibleForecasts.length === 0 && (
           <p className="forecast-empty">No daily forecast available.</p>
         )}

@@ -638,15 +638,6 @@ button {
   text-transform: uppercase;
 }
 
-.daily-row--placeholder {
-  color: var(--color-text-muted);
-  opacity: 0.48;
-}
-
-.daily-row--placeholder > span:first-child {
-  font-size: 0.75rem;
-}
-
 .forecast-empty {
   align-self: center;
   margin: auto;
@@ -660,10 +651,6 @@ button {
   height: 0.2rem;
   border-radius: 999px;
   background: linear-gradient(90deg, #2999eb, #20cfb0, #ffd027);
-}
-
-.temperature-range--empty {
-  background: rgb(255 255 255 / 12%);
 }
 
 .pagination {
@@ -1382,8 +1369,7 @@ button {
   }
 
   .favorite-condition span:last-child,
-  .favorite-row > span,
-  .favorite-actions button:last-child {
+  .favorite-row > span {
     display: none;
   }
 

@@ -1,4 +1,4 @@
-export type { FavoriteLocation, Location } from './location'
+export type { Location } from './location'
 export type {
   CurrentWeather,
   DailyForecast,

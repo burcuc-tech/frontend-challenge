@@ -10,12 +10,12 @@ A responsive weather dashboard built for Sprint #24 with React and TypeScript. U
 - Paginated 30-day weather timeline with previous and next navigation
 - Favorite city management with duplicate prevention
 - Favorite persistence through `localStorage`
-- Live weather summaries on the Favorites page
+- Current weather summaries on the Favorites page
 - Persistent Celsius and Fahrenheit preference
 - Loading, error, empty, and unavailable states
 - Retry action for failed forecast requests without displaying mock weather
 - Responsive desktop and mobile layouts
-- Keyboard-accessible search suggestions and semantic toggle controls
+- Keyboard-aware search suggestions with screen-reader semantics and accessible toggle controls
 - Automated tests for domain utilities, weather services, and critical UI flows
 
 ## Tech Stack
@@ -23,7 +23,7 @@ A responsive weather dashboard built for Sprint #24 with React and TypeScript. U
 - React 19
 - TypeScript
 - Vite
-- CSS and Tailwind CSS
+- CSS
 - Lucide React
 - Vitest
 - Open-Meteo Geocoding and Forecast APIs
@@ -34,7 +34,7 @@ No API key or environment variable is required.
 
 ### Requirements
 
-- Node.js 20 or newer
+- Node.js 20.19+ (20.x) or Node.js 22.12+
 - npm
 
 ### Installation
@@ -77,11 +77,11 @@ src/
 ├── api/          # Open-Meteo request client and external response types
 ├── assets/       # Optimized local images
 ├── components/   # Reusable interface and forecast components
-├── constants/    # Defaults, mock fallback data, and WMO mappings
+├── constants/    # Defaults and WMO weather-code mappings
 ├── hooks/        # Search, forecast, favorites, and unit state
 ├── pages/        # Forecast and Favorites page composition
 ├── services/     # API query construction and domain mapping
-├── styles/       # Feature-specific styles
+├── styles/       # Additional shared visual styles
 ├── types/        # Application domain models
 └── utils/        # Weather formatting and conversion helpers
 ```
@@ -122,23 +122,23 @@ The automated suite covers:
 - Geocoding query construction and response mapping
 - Forecast and favorite-summary request parameters
 - Forecast response mapping and HTTP error handling
-- Keyboard city selection and forecast error/retry behavior
+- Keyboard city selection, active-suggestion semantics, and forecast error/retry behavior
 - Favorite persistence and temperature-unit controls
 - Daily pagination navigation and boundary states
 
 Network-dependent service tests use controlled `fetch` mocks, keeping the suite deterministic and usable offline.
 
-## 30-Day Forecast Note
+## 30-Day Weather Timeline
 
-Open-Meteo's standard forecast horizon does not provide 30 future days in one request. To preserve the challenge's 30-day browsing requirement, the application requests 14 past days and 16 forecast days and displays them as one chronological timeline.
+Open-Meteo's standard forecast horizon does not provide 30 future days in one request. Following the Sprint resource guidance, the application requests 14 past days and 16 forecast days and displays them as one chronological timeline.
 
 Past days are visually muted and marked with a `Past` label, while today and forecast days retain the standard styling.
 
-This is an explicit product trade-off: the interface provides 30 daily entries, but the complete range is not a 30-day future prediction. Missing values are shown as unavailable rather than duplicating data.
+This is an explicit product trade-off: the interface provides 30 daily entries, but the complete range is not a 30-day future prediction.
 
 ## MVP Scope
 
-The Sprint #24 acceptance criteria for city search, weather display, favorites, pagination, and responsive behavior are implemented. World Map, Alerts, Settings, and account actions remain visual navigation placeholders because they are outside the required MVP stories.
+The Sprint #24 acceptance criteria for city search, weather display, favorites, pagination, and responsive behavior are implemented. As directed by the Sprint resources, the 30-day view combines historical and forecast data. World Map, Alerts, and Settings remain visibly disabled navigation placeholders, while the profile and Premium area remain visual-only because they are outside the required MVP stories.
 
 ## Future Improvements
 

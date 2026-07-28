@@ -8,7 +8,6 @@ import {
   Gauge,
   Home,
   Map,
-  Menu,
   Plus,
   Search,
   Settings,
@@ -16,7 +15,6 @@ import {
   Sun,
   Sunrise,
   Sunset,
-  Trash2,
   Wind,
   type LucideIcon,
 } from 'lucide-react'
@@ -28,7 +26,6 @@ export type IconName =
   | 'home'
   | 'left'
   | 'map'
-  | 'menu'
   | 'plus'
   | 'pressure'
   | 'right'
@@ -37,7 +34,6 @@ export type IconName =
   | 'sun'
   | 'sunrise'
   | 'sunset'
-  | 'trash'
   | 'visibility'
   | 'wind'
   | 'down'
@@ -54,7 +50,6 @@ const ICONS: Record<IconName, LucideIcon> = {
   home: Home,
   left: ChevronLeft,
   map: Map,
-  menu: Menu,
   plus: Plus,
   pressure: Gauge,
   right: ChevronRight,
@@ -63,7 +58,6 @@ const ICONS: Record<IconName, LucideIcon> = {
   sun: Sun,
   sunrise: Sunrise,
   sunset: Sunset,
-  trash: Trash2,
   visibility: Eye,
   wind: Wind,
   down: ChevronDown,

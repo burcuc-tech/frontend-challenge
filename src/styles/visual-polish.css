@@ -1,3 +1,5 @@
+/* Shared visual polish layered on top of the core layout styles. */
+
 .sidebar {
   background: linear-gradient(180deg, rgb(14 48 82 / 94%), rgb(5 28 52 / 97%));
 }

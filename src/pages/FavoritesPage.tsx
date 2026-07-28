@@ -99,13 +99,6 @@ export function FavoritesPage({
                   >
                     <Icon name="favorite" />
                   </button>
-                  <button
-                    aria-label={`Delete ${location.name}`}
-                    onClick={() => onRemoveFavorite(location.id)}
-                    type="button"
-                  >
-                    <Icon name="trash" />
-                  </button>
                 </div>
               </article>
             )

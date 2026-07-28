@@ -4,7 +4,7 @@ const UNKNOWN_CONDITION: WeatherCondition = {
   label: 'Unknown conditions',
 }
 
-export const WEATHER_CONDITIONS: Record<number, WeatherCondition> = {
+const WEATHER_CONDITIONS: Record<number, WeatherCondition> = {
   0: { label: 'Clear sky' },
   1: { label: 'Mainly clear' },
   2: { label: 'Partly cloudy' },

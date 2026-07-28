@@ -37,7 +37,9 @@ describe('ForecastPage', () => {
       'Weather for Oslo is unavailable',
     )
     expect(screen.queryByText('Hourly forecast')).not.toBeInTheDocument()
-    expect(screen.queryByText('30-day forecast')).not.toBeInTheDocument()
+    expect(
+      screen.queryByText('30-day weather timeline'),
+    ).not.toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: 'Try again' }))
     expect(onRetry).toHaveBeenCalledOnce()

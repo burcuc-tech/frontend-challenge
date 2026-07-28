@@ -10,7 +10,7 @@ import { FavoritesPage } from './pages/FavoritesPage'
 import { ForecastPage } from './pages/ForecastPage'
 import type { Location } from './types'
 import './App.css'
-import './styles/premium.css'
+import './styles/visual-polish.css'
 
 function App() {
   const [activeView, setActiveView] = useState<ViewName>('forecast')
