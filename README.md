@@ -10,26 +10,6 @@ A responsive weather dashboard built for Sprint #24 with React and TypeScript. U
 
 ![Weather dashboard desktop view](docs/screenshots/weather-dashboard-desktop.JPG)
 
-#### Mobile overview
-
-<p align="center">
-  <img
-    src="docs/screenshots/weather-dashboard-mobile-overview.jpeg"
-    alt="Weather dashboard mobile overview"
-    width="390"
-  />
-</p>
-
-#### Mobile forecast details
-
-<p align="center">
-  <img
-    src="docs/screenshots/weather-dashboard-mobile-forecast.jpeg"
-    alt="Weather dashboard mobile forecast details"
-    width="390"
-  />
-</p>
-
 ### Favorites
 
 #### Desktop
@@ -38,13 +18,22 @@ A responsive weather dashboard built for Sprint #24 with React and TypeScript. U
 
 #### Mobile
 
-<p align="center">
-  <img
-    src="docs/screenshots/weather-favorites-mobile.jpeg"
-    alt="Favorite cities mobile view"
-    width="390"
-  />
-</p>
+<table>
+  <tr>
+    <td align="center">
+      <img src="docs/screenshots/weather-dashboard-mobile-overview.jpeg" alt="Weather dashboard mobile overview" width="250" /><br />
+      <sub>Dashboard overview</sub>
+    </td>
+    <td align="center">
+      <img src="docs/screenshots/weather-dashboard-mobile-forecast.jpeg" alt="Weather dashboard mobile forecast details" width="250" /><br />
+      <sub>Forecast details</sub>
+    </td>
+    <td align="center">
+      <img src="docs/screenshots/weather-favorites-mobile.jpeg" alt="Favorite cities mobile view" width="250" /><br />
+      <sub>Favorites</sub>
+    </td>
+  </tr>
+</table>
 
 ## Features
 
