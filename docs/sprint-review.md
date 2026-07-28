@@ -97,7 +97,7 @@ I added Vitest tests for:
 - Temperature-unit controls
 - Daily pagination boundaries
 
-The current suite has 45 tests across 8 test files, all passing. Service tests mock `fetch`, making them deterministic and independent of network availability. Component tests use React Testing Library and jsdom to cover real user interactions such as keyboard navigation and retry actions instead of testing only implementation details.
+The current suite has 46 tests across 8 test files, all passing. Service tests mock `fetch`, making them deterministic and independent of network availability. Component tests use React Testing Library and jsdom to cover real user interactions such as keyboard navigation and retry actions instead of testing only implementation details.
 
 Automated coverage focuses on domain logic, the API service boundary, and the most important component interactions. Full end-to-end browser coverage was not added in this MVP.
 

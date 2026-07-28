@@ -13,6 +13,7 @@ interface NavigationProps {
 }
 
 interface NavigationItem {
+  disabled?: boolean
   icon: IconName
   label: string
   view?: ViewName
@@ -20,10 +21,10 @@ interface NavigationItem {
 
 const navigationItems: NavigationItem[] = [
   { icon: 'home', label: 'Home', view: 'forecast' },
-  { icon: 'map', label: 'World Map' },
+  { disabled: true, icon: 'map', label: 'World Map' },
   { icon: 'favorite', label: 'Favorites', view: 'favorites' },
-  { icon: 'alert', label: 'Alerts' },
-  { icon: 'settings', label: 'Settings' },
+  { disabled: true, icon: 'alert', label: 'Alerts' },
+  { disabled: true, icon: 'settings', label: 'Settings' },
 ]
 
 export function Navigation({
@@ -46,7 +47,9 @@ export function Navigation({
 
             return (
               <button
+                aria-label={item.label}
                 className={`nav-item${isActive ? ' nav-item--active' : ''}`}
+                disabled={item.disabled}
                 key={item.label}
                 onClick={() => item.view && onViewChange(item.view)}
                 type="button"
@@ -90,7 +93,9 @@ export function Navigation({
 
           return (
             <button
+              aria-label={item.label}
               className={isActive ? 'mobile-nav__active' : ''}
+              disabled={item.disabled}
               key={item.label}
               onClick={() => item.view && onViewChange(item.view)}
               type="button"

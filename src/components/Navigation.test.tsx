@@ -24,4 +24,21 @@ describe('Navigation', () => {
 
     expect(onTemperatureUnitChange).toHaveBeenCalledWith('fahrenheit')
   })
+
+  it('disables features outside the MVP scope', () => {
+    render(
+      <Navigation
+        activeView="forecast"
+        onTemperatureUnitChange={vi.fn()}
+        onViewChange={vi.fn()}
+        temperatureUnit="celsius"
+      />,
+    )
+
+    for (const label of ['World Map', 'Alerts', 'Settings']) {
+      screen.getAllByRole('button', { name: label }).forEach((button) => {
+        expect(button).toBeDisabled()
+      })
+    }
+  })
 })
