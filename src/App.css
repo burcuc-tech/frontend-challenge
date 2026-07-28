@@ -348,7 +348,8 @@ button {
 .location-heading h1 {
   min-width: 0;
   margin: 0;
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
+  word-break: normal;
   font-size: clamp(1.6rem, 3vw, 2.4rem);
 }
 
@@ -430,7 +431,7 @@ button {
 
 .now-card {
   position: absolute;
-  top: 7.5rem;
+  top: 5.5rem;
   right: var(--space-8);
   display: grid;
   width: 7.5rem;
@@ -912,13 +913,13 @@ button {
   }
 
   .now-card {
-    top: 5.5rem;
-    min-height: 8rem;
+    top: 4.75rem;
+    min-height: 9rem;
   }
 
   .now-card .weather-svg {
-    width: 3.45rem;
-    height: 3.45rem;
+    width: 3.75rem;
+    height: 3.75rem;
   }
 
   .forecast-columns {
