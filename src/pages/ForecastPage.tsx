@@ -4,7 +4,7 @@ import type {
   TemperatureUnit,
   WeatherForecast,
 } from '../types'
-import { formatLocation } from '../utils'
+import { formatDate, formatLocation } from '../utils'
 import { CurrentWeatherHero } from '../components/CurrentWeatherHero'
 import { DailyForecast } from '../components/DailyForecast'
 import { DesktopToolbar } from '../components/DesktopToolbar'
@@ -36,15 +36,33 @@ export function ForecastPage({
   temperatureUnit,
 }: ForecastPageProps) {
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false)
+  const [selectedDate, setSelectedDate] = useState<string | null>(null)
   const currentHour = forecast?.current.time.slice(0, 13) ?? ''
   const currentHourIndex = forecast?.hourly.findIndex(
     (hour) => hour.time.slice(0, 13) === currentHour,
   ) ?? -1
-  const visibleHourlyForecasts = forecast?.hourly.slice(
-    Math.max(currentHourIndex, 0),
-    Math.max(currentHourIndex, 0) + 24,
-  ) ?? []
   const currentDate = forecast?.current.time.slice(0, 10) ?? ''
+  const effectiveSelectedDate = forecast?.daily.some(
+    (day) => day.date === selectedDate,
+  )
+    ? selectedDate!
+    : currentDate
+  const isCurrentDateSelected = effectiveSelectedDate === currentDate
+  const visibleHourlyForecasts = isCurrentDateSelected
+    ? forecast?.hourly.slice(
+        Math.max(currentHourIndex, 0),
+        Math.max(currentHourIndex, 0) + 24,
+      ) ?? []
+    : forecast?.hourly.filter(
+        (hour) => hour.time.startsWith(effectiveSelectedDate),
+      ) ?? []
+  const hourlyTitle = effectiveSelectedDate
+    ? `Hourly · ${formatDate(`${effectiveSelectedDate}T12:00`, {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+      })}`
+    : 'Hourly forecast'
 
   return (
     <main className="forecast-page">
@@ -139,13 +157,17 @@ export function ForecastPage({
             <div className="forecast-columns">
               <HourlyForecast
                 forecasts={visibleHourlyForecasts}
-                key={`hourly-${location.id}`}
+                isCurrentDay={isCurrentDateSelected}
+                key={`hourly-${location.id}-${effectiveSelectedDate}`}
                 temperatureUnit={temperatureUnit}
+                title={hourlyTitle}
               />
               <DailyForecast
                 currentDate={currentDate}
                 forecasts={forecast.daily}
                 key={`daily-${location.id}`}
+                onDateSelect={setSelectedDate}
+                selectedDate={effectiveSelectedDate}
                 temperatureUnit={temperatureUnit}
               />
             </div>

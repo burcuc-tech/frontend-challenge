@@ -11,6 +11,8 @@ import { Icon } from './Icon'
 interface DailyForecastProps {
   currentDate: string
   forecasts: DailyForecastData[]
+  onDateSelect: (date: string) => void
+  selectedDate: string
   temperatureUnit: TemperatureUnit
 }
 
@@ -19,6 +21,8 @@ const FORECASTS_PER_PAGE = 7
 export function DailyForecast({
   currentDate,
   forecasts,
+  onDateSelect,
+  selectedDate,
   temperatureUnit,
 }: DailyForecastProps) {
   const currentDayIndex = forecasts.findIndex(
@@ -56,12 +60,15 @@ export function DailyForecast({
       <div className={`daily-list${isExpanded ? ' daily-list--expanded' : ''}`}>
         {visibleForecasts.map((forecast) => {
           const isPast = forecast.date < currentDate
-          const isCurrentDay = forecast.date === currentDate
+          const isSelected = forecast.date === selectedDate
 
           return (
-            <article
-              className={`daily-row${isPast ? ' daily-row--past' : ''}${isCurrentDay ? ' daily-row--active' : ''}`}
+            <button
+              aria-pressed={isSelected}
+              className={`daily-row${isPast ? ' daily-row--past' : ''}${isSelected ? ' daily-row--active' : ''}`}
               key={forecast.date}
+              onClick={() => onDateSelect(forecast.date)}
+              type="button"
             >
               <div className="daily-row__date">
                 <time dateTime={forecast.date}>
@@ -89,7 +96,7 @@ export function DailyForecast({
                   temperatureUnit,
                 )}
               </strong>
-            </article>
+            </button>
           )
         })}
         {Array.from({ length: spacerCount }, (_, index) => (

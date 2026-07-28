@@ -358,6 +358,10 @@ button {
   color: #d8e6f3;
 }
 
+.mobile-current-time {
+  display: none;
+}
+
 .favorite-button {
   display: grid;
   width: 2.5rem;
@@ -572,6 +576,10 @@ button {
   scrollbar-width: thin;
 }
 
+.hourly-list.hourly-list--expanded {
+  grid-template-columns: repeat(24, minmax(3.4rem, 1fr));
+}
+
 .hourly-item {
   display: grid;
   justify-items: center;
@@ -604,12 +612,15 @@ button {
 
 .daily-row {
   display: grid;
+  width: 100%;
   grid-template-columns: minmax(6.5rem, 1.2fr) 2rem 2rem minmax(4rem, 1fr) 2rem;
   align-items: center;
   gap: var(--space-3);
   min-height: 2rem;
   padding-inline: 0.5rem;
+  background: transparent;
   font-size: var(--font-size-sm);
+  text-align: left;
 }
 
 .daily-row--past {
@@ -1061,6 +1072,13 @@ button {
     display: none;
   }
 
+  .weather-hero__content > .mobile-current-time {
+    display: block;
+    margin: 0 0 0.35rem 0.1rem;
+    color: #d8e6f3;
+    font-size: 0.78rem;
+  }
+
   .current-weather {
     width: calc(100% - 6.25rem);
     align-items: flex-start;
@@ -1208,11 +1226,20 @@ button {
   }
 
   .panel__header {
+    gap: var(--space-2);
     margin-bottom: var(--space-3);
   }
 
   .panel__header h2 {
-    font-size: var(--font-size-base);
+    min-width: 0;
+    overflow: hidden;
+    font-size: 0.9rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .panel__header .text-button {
+    flex: 0 0 auto;
   }
 
   .hourly-list {
@@ -1225,6 +1252,10 @@ button {
     scroll-snap-type: x proximity;
     scrollbar-width: none;
     overscroll-behavior-inline: contain;
+  }
+
+  .hourly-list.hourly-list--expanded {
+    grid-template-columns: repeat(24, 3.5rem);
   }
 
   .hourly-list::-webkit-scrollbar {

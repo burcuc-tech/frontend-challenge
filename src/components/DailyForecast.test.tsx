@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import type { DailyForecast as DailyForecastData } from '../types'
 import { DailyForecast } from './DailyForecast'
 
@@ -28,6 +28,8 @@ describe('DailyForecast', () => {
       <DailyForecast
         currentDate="2026-01-03"
         forecasts={createForecasts(5)}
+        onDateSelect={vi.fn()}
+        selectedDate="2026-01-03"
         temperatureUnit="celsius"
       />,
     )
@@ -37,10 +39,10 @@ describe('DailyForecast', () => {
 
     const pastRow = document
       .querySelector('time[datetime="2026-01-02"]')
-      ?.closest('article')
+      ?.closest('button')
     const currentRow = document
       .querySelector('time[datetime="2026-01-03"]')
-      ?.closest('article')
+      ?.closest('button')
 
     expect(pastRow).toHaveClass('daily-row--past')
     expect(currentRow).toHaveClass('daily-row--active')
@@ -54,6 +56,8 @@ describe('DailyForecast', () => {
       <DailyForecast
         currentDate="2026-01-01"
         forecasts={createForecasts(15)}
+        onDateSelect={vi.fn()}
+        selectedDate="2026-01-01"
         temperatureUnit="celsius"
       />,
     )
@@ -75,5 +79,24 @@ describe('DailyForecast', () => {
 
     await user.click(previousButton)
     expect(document.querySelector('time[datetime="2026-01-08"]')).toBeVisible()
+  })
+
+  it('selects a date for its hourly forecast', async () => {
+    const onDateSelect = vi.fn()
+    const user = userEvent.setup()
+
+    render(
+      <DailyForecast
+        currentDate="2026-01-03"
+        forecasts={createForecasts(5)}
+        onDateSelect={onDateSelect}
+        selectedDate="2026-01-03"
+        temperatureUnit="celsius"
+      />,
+    )
+
+    await user.click(screen.getByRole('button', { name: /Thu, Jan 1/i }))
+
+    expect(onDateSelect).toHaveBeenCalledWith('2026-01-01')
   })
 })

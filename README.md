@@ -126,7 +126,7 @@ The automated suite covers:
 - Forecast response mapping and HTTP error handling
 - Keyboard city selection, active-suggestion semantics, and forecast error/retry behavior
 - Favorite persistence and temperature-unit controls
-- Daily pagination navigation and boundary states
+- Daily date selection, pagination navigation, and boundary states
 
 Network-dependent service tests use controlled `fetch` mocks, keeping the suite deterministic and usable offline.
 

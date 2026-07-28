@@ -97,9 +97,9 @@ I added Vitest tests for:
 - Forecast error and retry presentation
 - Favorite persistence and removal
 - Temperature-unit controls
-- Daily pagination boundaries
+- Daily date selection and pagination boundaries
 
-The current suite has 46 tests across 8 test files, and all tests pass. Service tests mock `fetch`, so they give the same result without using the network. Component tests use React Testing Library and jsdom. They test user actions such as keyboard navigation and retry buttons instead of only checking internal code.
+The current suite has 47 tests across 8 test files, and all tests pass. Service tests mock `fetch`, so they give the same result without using the network. Component tests use React Testing Library and jsdom. They test user actions such as keyboard navigation, daily date selection, and retry buttons instead of only checking internal code.
 
 The tests focus on weather logic, API mapping, and the most important component interactions. I did not add full end-to-end browser tests for this MVP.
 

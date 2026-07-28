@@ -78,6 +78,17 @@ export function CurrentWeatherHero({
         </div>
       </div>
 
+      <p className="mobile-current-time">
+        {formatDate(currentTime, {
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          timeZone: forecast.timezone,
+        })}
+      </p>
+
       <div className="current-weather">
         <span className="current-weather__temperature">
           {formatTemperature(current.temperature, temperatureUnit)}
